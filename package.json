@@ -1,0 +1,24 @@
+{
+  "name": "snowflake-mcp-server",
+  "version": "1.0.0",
+  "description": "Model Context Protocol (MCP) Server for Snowflake, tailored for Windsurf",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "snowflake",
+    "mcp",
+    "model-context-protocol",
+    "windsurf"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/server": "^0.3.0",
+    "snowflake-sdk": "^1.9.0",
+    "dotenv": "^16.3.1"
+  }
+}
