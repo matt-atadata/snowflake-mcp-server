@@ -1,5 +1,6 @@
 import { CallToolRequestSchema, ListToolsRequestSchema } from '@modelcontextprotocol/server';
 import { executeQuery, executeWriteQuery, executeDDLQuery } from './snowflake.js';
+import logger from './logger.js';
 
 /**
  * Register all Snowflake tools with the MCP server
@@ -156,17 +157,27 @@ export function registerTools(server, connection) {
     const { name, arguments: args } = request.params;
     let result;
 
+    logger.info('Tool execution request received', { tool: name, args });
+
     try {
       switch (name) {
         // Query tools
         case "read_query":
+          if (!args.query || typeof args.query !== 'string') {
+            throw new Error("Invalid query: must be a non-empty string");
+          }
           if (!args.query.trim().toUpperCase().startsWith("SELECT")) {
             throw new Error("Only SELECT queries are allowed with read_query");
           }
+          logger.debug('Executing read query', { query: args.query.substring(0, 100) + (args.query.length > 100 ? '...' : '') });
           result = await executeQuery(connection, args.query);
+          logger.info('Read query executed successfully', { rowCount: result.length });
           break;
           
         case "write_query":
+          if (!args.query || typeof args.query !== 'string') {
+            throw new Error("Invalid query: must be a non-empty string");
+          }
           if (args.query.trim().toUpperCase().startsWith("SELECT")) {
             throw new Error("Use read_query for SELECT queries");
           }
@@ -175,11 +186,18 @@ export function registerTools(server, connection) {
               args.query.trim().toUpperCase().startsWith("DROP")) {
             throw new Error("Use create_table for DDL operations");
           }
+          logger.debug('Executing write query', { query: args.query.substring(0, 100) + (args.query.length > 100 ? '...' : '') });
           result = await executeWriteQuery(connection, args.query);
+          logger.info('Write query executed successfully', { affectedRows: result.affected_rows });
           break;
           
         case "create_table":
+          if (!args.query || typeof args.query !== 'string') {
+            throw new Error("Invalid query: must be a non-empty string");
+          }
+          logger.debug('Executing DDL query', { query: args.query.substring(0, 100) + (args.query.length > 100 ? '...' : '') });
           result = await executeDDLQuery(connection, args.query);
+          logger.info('DDL query executed successfully');
           break;
           
         // Schema tools
@@ -235,17 +253,108 @@ export function registerTools(server, connection) {
           throw new Error(`Tool not found: ${name}`);
       }
 
+      // Format the result for better readability
+      const formattedResult = formatToolResult(result);
+      
+      logger.info(`Tool ${name} executed successfully`);
       return {
         content: [
           {
             type: "text",
-            text: JSON.stringify(result, null, 2)
+            text: formattedResult
           }
         ]
       };
     } catch (error) {
-      console.error(`Error executing tool ${name}:`, error);
-      throw error;
+      logger.error(`Error executing tool ${name}:`, { error, args });
+      
+      // Provide a more helpful error message to the client
+      const errorMessage = {
+        error: error.message,
+        tool: name,
+        suggestion: getSuggestionForError(name, error)
+      };
+      
+      return {
+        content: [
+          {
+            type: "text",
+            text: JSON.stringify(errorMessage, null, 2)
+          }
+        ],
+        error: error.message
+      };
     }
   });
+}
+
+/**
+ * Format tool results for better readability
+ * @param {any} result - The result to format
+ * @returns {string} Formatted result as a string
+ */
+function formatToolResult(result) {
+  if (!result) {
+    return 'No results returned';
+  }
+  
+  // Handle array results (typical for query results)
+  if (Array.isArray(result)) {
+    if (result.length === 0) {
+      return 'Query executed successfully. No rows returned.';
+    }
+    
+    // For small result sets, return the full JSON
+    if (result.length <= 20) {
+      return JSON.stringify(result, null, 2);
+    }
+    
+    // For larger result sets, summarize and return a sample
+    return `Query returned ${result.length} rows. Here's a sample of the first 10:\n\n${JSON.stringify(result.slice(0, 10), null, 2)}\n\n...and ${result.length - 10} more rows.`;
+  }
+  
+  // Handle objects (typical for write/DDL operations)
+  return JSON.stringify(result, null, 2);
+}
+
+/**
+ * Get a helpful suggestion based on the error
+ * @param {string} toolName - The name of the tool that was called
+ * @param {Error} error - The error that occurred
+ * @returns {string} A suggestion to help resolve the error
+ */
+function getSuggestionForError(toolName, error) {
+  const errorMsg = error.message.toLowerCase();
+  
+  // Authentication errors
+  if (errorMsg.includes('authentication') || errorMsg.includes('login') || errorMsg.includes('password')) {
+    return 'Check your Snowflake credentials in the .env file';
+  }
+  
+  // Syntax errors
+  if (errorMsg.includes('syntax') || errorMsg.includes('sql')) {
+    return 'There appears to be a syntax error in your SQL query. Please check the query syntax.';
+  }
+  
+  // Object not found errors
+  if (errorMsg.includes('does not exist') || errorMsg.includes('not found')) {
+    return 'The database object (table, view, etc.) referenced in your query may not exist or you may not have access to it.';
+  }
+  
+  // Permission errors
+  if (errorMsg.includes('permission') || errorMsg.includes('privilege') || errorMsg.includes('access')) {
+    return 'You may not have the necessary permissions to perform this operation.';
+  }
+  
+  // Tool-specific suggestions
+  switch (toolName) {
+    case 'read_query':
+      return 'Make sure you are using a SELECT query with the read_query tool.';
+    case 'write_query':
+      return 'Make sure you are using an INSERT, UPDATE, or DELETE query with the write_query tool.';
+    case 'create_table':
+      return 'Make sure you are using a CREATE TABLE statement with the create_table tool.';
+    default:
+      return 'Try checking the tool documentation for correct usage.';
+  }
 }

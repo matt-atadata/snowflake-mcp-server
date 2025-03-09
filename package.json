@@ -4,21 +4,48 @@
   "description": "Model Context Protocol (MCP) Server for Snowflake, tailored for Windsurf",
   "main": "src/index.js",
   "type": "module",
+  "bin": {
+    "snowflake-mcp-server": "./src/index.js"
+  },
   "scripts": {
     "start": "node src/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon src/index.js",
+    "test": "mocha --node-option=experimental-vm-modules test/**/*.test.js",
+    "test:watch": "mocha --node-option=experimental-vm-modules --watch test/**/*.test.js",
+    "test:coverage": "c8 mocha --node-option=experimental-vm-modules test/**/*.test.js",
+    "lint": "eslint src/**/*.js test/**/*.js",
+    "format": "prettier --write 'src/**/*.js' 'test/**/*.js'",
+    "inspect": "mcp-inspector --stdio --command 'node src/index.js'",
+    "prepare": "npm run lint && npm test"
   },
   "keywords": [
     "snowflake",
     "mcp",
     "model-context-protocol",
-    "windsurf"
+    "windsurf",
+    "sql",
+    "database"
   ],
-  "author": "",
-  "license": "MIT",
+  "author": "atadata",
+  "license": "",
   "dependencies": {
     "@modelcontextprotocol/server": "^0.3.0",
     "snowflake-sdk": "^1.9.0",
-    "dotenv": "^16.3.1"
+    "dotenv": "^16.3.1",
+    "winston": "^3.11.0"
+  },
+  "devDependencies": {
+    "@modelcontextprotocol/inspector": "^0.3.0",
+    "c8": "^9.1.0",
+    "chai": "^4.3.10",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "mocha": "^10.2.0",
+    "nodemon": "^3.0.3",
+    "prettier": "^3.1.1",
+    "sinon": "^17.0.1"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   }
 }
