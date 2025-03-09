@@ -1,9 +1,10 @@
 # Snowflake MCP Server for Windsurf
 
-A Model Context Protocol (MCP) Server implementation that provides database interaction with Snowflake, tailored for Windsurf. This server enables running SQL queries and retrieving metadata from Snowflake databases through a standardized protocol interface.
+A Model Context Protocol (MCP) Server implementation that provides database interaction with Snowflake, tailored for Windsurf. This server enables running SQL queries and retrieving metadata from Snowflake databases through a standardized protocol interface. Built using the `@modelcontextprotocol/sdk` package.
 
 ## Features
 
+- **MCP SDK Integration**: Built using the official `@modelcontextprotocol/sdk` package
 - **Stdio Transport**: Implements the required transport mechanism for Windsurf
 - **Keypair Authentication**: Supports secure connection to Snowflake using private key authentication
 - **Metadata Exposure**: Provides comprehensive metadata needed for generating SQL & Python in Windsurf
@@ -11,7 +12,7 @@ A Model Context Protocol (MCP) Server implementation that provides database inte
 - **Insights Memo**: Maintains a memo of data insights discovered during analysis
 - **Structured Logging**: Uses Winston for comprehensive logging with configurable levels
 - **Error Handling**: Robust error handling with helpful suggestions for troubleshooting
-- **Resource Caching**: Efficient caching of metadata resources for improved performance
+- **Schema Validation**: Uses Zod for input validation of tool parameters
 
 ## Tools
 
@@ -54,6 +55,8 @@ cd snowflake-mcp-server
 ```bash
 npm install
 ```
+
+This will install all required dependencies including `@modelcontextprotocol/sdk`, `snowflake-sdk`, `winston`, and `zod`.
 
 3. Configure your Snowflake connection:
 ```bash

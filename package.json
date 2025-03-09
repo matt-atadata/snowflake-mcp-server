@@ -13,10 +13,12 @@
     "test": "mocha --node-option=experimental-vm-modules test/**/*.test.js",
     "test:watch": "mocha --node-option=experimental-vm-modules --watch test/**/*.test.js",
     "test:coverage": "c8 mocha --node-option=experimental-vm-modules test/**/*.test.js",
+    "test:tools": "node test/test-tools.js",
     "lint": "eslint src/**/*.js test/**/*.js",
     "format": "prettier --write 'src/**/*.js' 'test/**/*.js'",
     "inspect": "mcp-inspector --stdio --command 'node src/index.js'",
-    "prepare": "npm run lint && npm test"
+    "deploy": "node deploy.js",
+    "deploy:sh": "./deploy.sh"
   },
   "keywords": [
     "snowflake",
@@ -29,10 +31,11 @@
   "author": "atadata",
   "license": "",
   "dependencies": {
-    "@modelcontextprotocol/server": "^0.3.0",
+    "@modelcontextprotocol/sdk": "^1.6.1",
     "snowflake-sdk": "^1.9.0",
     "dotenv": "^16.3.1",
-    "winston": "^3.11.0"
+    "winston": "^3.11.0",
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@modelcontextprotocol/inspector": "^0.3.0",

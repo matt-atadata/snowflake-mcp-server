@@ -1,0 +1,11 @@
+{
+  "extension": ["js"],
+  "node-option": [
+    "experimental-vm-modules",
+    "no-warnings"
+  ],
+  "require": [],
+  "timeout": 5000,
+  "ui": "bdd",
+  "color": true
+}

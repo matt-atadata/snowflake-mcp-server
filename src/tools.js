@@ -1,291 +1,307 @@
-import { CallToolRequestSchema, ListToolsRequestSchema } from '@modelcontextprotocol/server';
+import { z } from 'zod';
 import { executeQuery, executeWriteQuery, executeDDLQuery } from './snowflake.js';
 import logger from './logger.js';
 
 /**
  * Register all Snowflake tools with the MCP server
- * @param {Server} server - MCP server instance
+ * @param {McpServer} server - MCP server instance
  * @param {Object} connection - Snowflake connection object
  */
 export function registerTools(server, connection) {
-  // Define available tools
-  server.setRequestHandler(ListToolsRequestSchema, async () => {
-    return {
-      tools: [
-        // Query tools
-        {
-          name: "read_query",
-          description: "Execute SELECT queries to read data from Snowflake",
-          inputSchema: {
-            type: "object",
-            properties: {
-              query: { 
-                type: "string",
-                description: "The SELECT SQL query to execute" 
-              }
-            },
-            required: ["query"]
-          }
-        },
-        {
-          name: "write_query",
-          description: "Execute INSERT, UPDATE, or DELETE queries in Snowflake",
-          inputSchema: {
-            type: "object",
-            properties: {
-              query: { 
-                type: "string",
-                description: "The SQL modification query" 
-              }
-            },
-            required: ["query"]
-          }
-        },
-        {
-          name: "create_table",
-          description: "Create new tables in Snowflake",
-          inputSchema: {
-            type: "object",
-            properties: {
-              query: { 
-                type: "string",
-                description: "CREATE TABLE SQL statement" 
-              }
-            },
-            required: ["query"]
-          }
-        },
-        
-        // Schema tools
-        {
-          name: "list_databases",
-          description: "Get a list of all accessible databases in Snowflake",
-          inputSchema: {
-            type: "object",
-            properties: {}
-          }
-        },
-        {
-          name: "list_schemas",
-          description: "Get a list of all schemas in the current or specified database",
-          inputSchema: {
-            type: "object",
-            properties: {
-              database: { 
-                type: "string",
-                description: "Optional database name (uses current database if not specified)" 
-              }
-            }
-          }
-        },
-        {
-          name: "list_tables",
-          description: "Get a list of all tables in the current schema or specified schema",
-          inputSchema: {
-            type: "object",
-            properties: {
-              database: { 
-                type: "string",
-                description: "Optional database name (uses current database if not specified)" 
-              },
-              schema: { 
-                type: "string",
-                description: "Optional schema name (uses current schema if not specified)" 
-              }
-            }
-          }
-        },
-        {
-          name: "describe_table",
-          description: "View column information for a specific table",
-          inputSchema: {
-            type: "object",
-            properties: {
-              table_name: { 
-                type: "string",
-                description: "Name of table to describe (can be fully qualified)" 
-              }
-            },
-            required: ["table_name"]
-          }
-        },
-        {
-          name: "get_query_history",
-          description: "Retrieve recent query history for the current user",
-          inputSchema: {
-            type: "object",
-            properties: {
-              limit: { 
-                type: "number",
-                description: "Maximum number of queries to return (default: 10)" 
-              }
-            }
-          }
-        },
-        {
-          name: "get_user_roles",
-          description: "Get all roles assigned to the current user",
-          inputSchema: {
-            type: "object",
-            properties: {}
-          }
-        },
-        {
-          name: "get_table_sample",
-          description: "Get a sample of data from a table",
-          inputSchema: {
-            type: "object",
-            properties: {
-              table_name: { 
-                type: "string",
-                description: "Name of table to sample (can be fully qualified)" 
-              },
-              limit: { 
-                type: "number",
-                description: "Maximum number of rows to return (default: 10)" 
-              }
-            },
-            required: ["table_name"]
-          }
+  logger.info('Registering Snowflake tools');
+
+  // Register read_query tool
+  server.tool(
+    "read_query",
+    {
+      query: z.string().describe("The SELECT SQL query to execute")
+    },
+    async ({ query }) => {
+      logger.info('Tool execution request received', { tool: "read_query", query });
+      
+      try {
+        if (!query.trim().toUpperCase().startsWith("SELECT")) {
+          throw new Error("Only SELECT queries are allowed with read_query");
         }
-      ]
-    };
-  });
-
-  // Handle tool execution
-  server.setRequestHandler(CallToolRequestSchema, async (request) => {
-    const { name, arguments: args } = request.params;
-    let result;
-
-    logger.info('Tool execution request received', { tool: name, args });
-
-    try {
-      switch (name) {
-        // Query tools
-        case "read_query":
-          if (!args.query || typeof args.query !== 'string') {
-            throw new Error("Invalid query: must be a non-empty string");
-          }
-          if (!args.query.trim().toUpperCase().startsWith("SELECT")) {
-            throw new Error("Only SELECT queries are allowed with read_query");
-          }
-          logger.debug('Executing read query', { query: args.query.substring(0, 100) + (args.query.length > 100 ? '...' : '') });
-          result = await executeQuery(connection, args.query);
-          logger.info('Read query executed successfully', { rowCount: result.length });
-          break;
-          
-        case "write_query":
-          if (!args.query || typeof args.query !== 'string') {
-            throw new Error("Invalid query: must be a non-empty string");
-          }
-          if (args.query.trim().toUpperCase().startsWith("SELECT")) {
-            throw new Error("Use read_query for SELECT queries");
-          }
-          if (args.query.trim().toUpperCase().startsWith("CREATE") || 
-              args.query.trim().toUpperCase().startsWith("ALTER") || 
-              args.query.trim().toUpperCase().startsWith("DROP")) {
-            throw new Error("Use create_table for DDL operations");
-          }
-          logger.debug('Executing write query', { query: args.query.substring(0, 100) + (args.query.length > 100 ? '...' : '') });
-          result = await executeWriteQuery(connection, args.query);
-          logger.info('Write query executed successfully', { affectedRows: result.affected_rows });
-          break;
-          
-        case "create_table":
-          if (!args.query || typeof args.query !== 'string') {
-            throw new Error("Invalid query: must be a non-empty string");
-          }
-          logger.debug('Executing DDL query', { query: args.query.substring(0, 100) + (args.query.length > 100 ? '...' : '') });
-          result = await executeDDLQuery(connection, args.query);
-          logger.info('DDL query executed successfully');
-          break;
-          
-        // Schema tools
-        case "list_databases":
-          result = await executeQuery(connection, "SHOW DATABASES");
-          break;
-          
-        case "list_schemas":
-          let listSchemasQuery = "SHOW SCHEMAS";
-          if (args.database) {
-            listSchemasQuery = `SHOW SCHEMAS IN DATABASE ${args.database}`;
-          }
-          result = await executeQuery(connection, listSchemasQuery);
-          break;
-          
-        case "list_tables":
-          let listTablesQuery = "SHOW TABLES";
-          if (args.database && args.schema) {
-            listTablesQuery = `SHOW TABLES IN ${args.database}.${args.schema}`;
-          } else if (args.schema) {
-            listTablesQuery = `SHOW TABLES IN SCHEMA ${args.schema}`;
-          } else if (args.database) {
-            listTablesQuery = `SHOW TABLES IN DATABASE ${args.database}`;
-          }
-          result = await executeQuery(connection, listTablesQuery);
-          break;
-          
-        case "describe_table":
-          result = await executeQuery(connection, `DESCRIBE TABLE ${args.table_name}`);
-          break;
-          
-        case "get_query_history":
-          const limit = args.limit || 10;
-          result = await executeQuery(connection, 
-            `SELECT QUERY_ID, QUERY_TEXT, DATABASE_NAME, SCHEMA_NAME, 
-                    EXECUTION_STATUS, START_TIME, END_TIME, TOTAL_ELAPSED_TIME 
-             FROM TABLE(INFORMATION_SCHEMA.QUERY_HISTORY_BY_USER()) 
-             ORDER BY START_TIME DESC 
-             LIMIT ${limit}`);
-          break;
-          
-        case "get_user_roles":
-          result = await executeQuery(connection, "SHOW ROLES");
-          break;
-          
-        case "get_table_sample":
-          const sampleLimit = args.limit || 10;
-          result = await executeQuery(connection, 
-            `SELECT * FROM ${args.table_name} LIMIT ${sampleLimit}`);
-          break;
-          
-        default:
-          throw new Error(`Tool not found: ${name}`);
+        
+        logger.debug('Executing read query', { query: query.substring(0, 100) + (query.length > 100 ? '...' : '') });
+        const result = await executeQuery(connection, query);
+        logger.info('Read query executed successfully', { rowCount: result.length });
+        
+        return {
+          content: [{ type: "text", text: formatToolResult(result) }]
+        };
+      } catch (error) {
+        logger.error('Error executing read query', { error: error.message });
+        const suggestion = getSuggestionForError("read_query", error);
+        return {
+          content: [{ type: "text", text: `Error: ${error.message}\n\n${suggestion}` }]
+        };
       }
-
-      // Format the result for better readability
-      const formattedResult = formatToolResult(result);
-      
-      logger.info(`Tool ${name} executed successfully`);
-      return {
-        content: [
-          {
-            type: "text",
-            text: formattedResult
-          }
-        ]
-      };
-    } catch (error) {
-      logger.error(`Error executing tool ${name}:`, { error, args });
-      
-      // Provide a more helpful error message to the client
-      const errorMessage = {
-        error: error.message,
-        tool: name,
-        suggestion: getSuggestionForError(name, error)
-      };
-      
-      return {
-        content: [
-          {
-            type: "text",
-            text: JSON.stringify(errorMessage, null, 2)
-          }
-        ],
-        error: error.message
-      };
     }
-  });
+  );
+  
+  // Register write_query tool
+  server.tool(
+    "write_query",
+    {
+      query: z.string().describe("The SQL modification query")
+    },
+    async ({ query }) => {
+      logger.info('Tool execution request received', { tool: "write_query", query });
+      
+      try {
+        if (query.trim().toUpperCase().startsWith("SELECT")) {
+          throw new Error("Use read_query for SELECT queries");
+        }
+        if (query.trim().toUpperCase().startsWith("CREATE") || 
+            query.trim().toUpperCase().startsWith("ALTER") || 
+            query.trim().toUpperCase().startsWith("DROP")) {
+          throw new Error("Use create_table for DDL operations");
+        }
+        
+        logger.debug('Executing write query', { query: query.substring(0, 100) + (query.length > 100 ? '...' : '') });
+        const result = await executeWriteQuery(connection, query);
+        logger.info('Write query executed successfully', { affectedRows: result.affected_rows });
+        
+        return {
+          content: [{ type: "text", text: `Query executed successfully. Rows affected: ${result.affected_rows}` }]
+        };
+      } catch (error) {
+        logger.error('Error executing write query', { error: error.message });
+        const suggestion = getSuggestionForError("write_query", error);
+        return {
+          content: [{ type: "text", text: `Error: ${error.message}\n\n${suggestion}` }]
+        };
+      }
+    }
+  );
+  
+  // Register create_table tool
+  server.tool(
+    "create_table",
+    {
+      query: z.string().describe("CREATE TABLE SQL statement")
+    },
+    async ({ query }) => {
+      logger.info('Tool execution request received', { tool: "create_table", query });
+      
+      try {
+        logger.debug('Executing DDL query', { query: query.substring(0, 100) + (query.length > 100 ? '...' : '') });
+        const result = await executeDDLQuery(connection, query);
+        logger.info('DDL query executed successfully');
+        
+        return {
+          content: [{ type: "text", text: "Table operation completed successfully." }]
+        };
+      } catch (error) {
+        logger.error('Error executing DDL query', { error: error.message });
+        const suggestion = getSuggestionForError("create_table", error);
+        return {
+          content: [{ type: "text", text: `Error: ${error.message}\n\n${suggestion}` }]
+        };
+      }
+    }
+  );
+  
+  // Register list_databases tool
+  server.tool(
+    "list_databases",
+    {},
+    async () => {
+      logger.info('Tool execution request received', { tool: "list_databases" });
+      
+      try {
+        const result = await executeQuery(connection, "SHOW DATABASES");
+        logger.info('List databases executed successfully');
+        
+        return {
+          content: [{ type: "text", text: formatToolResult(result) }]
+        };
+      } catch (error) {
+        logger.error('Error listing databases', { error: error.message });
+        const suggestion = getSuggestionForError("list_databases", error);
+        return {
+          content: [{ type: "text", text: `Error: ${error.message}\n\n${suggestion}` }]
+        };
+      }
+    }
+  );
+  
+  // Register list_schemas tool
+  server.tool(
+    "list_schemas",
+    {
+      database: z.string().optional().describe("Optional database name (uses current database if not specified)")
+    },
+    async ({ database }) => {
+      logger.info('Tool execution request received', { tool: "list_schemas", database });
+      
+      try {
+        let listSchemasQuery = "SHOW SCHEMAS";
+        if (database) {
+          listSchemasQuery = `SHOW SCHEMAS IN DATABASE ${database}`;
+        }
+        
+        const result = await executeQuery(connection, listSchemasQuery);
+        logger.info('List schemas executed successfully');
+        
+        return {
+          content: [{ type: "text", text: formatToolResult(result) }]
+        };
+      } catch (error) {
+        logger.error('Error listing schemas', { error: error.message });
+        const suggestion = getSuggestionForError("list_schemas", error);
+        return {
+          content: [{ type: "text", text: `Error: ${error.message}\n\n${suggestion}` }]
+        };
+      }
+    }
+  );
+  
+  // Register list_tables tool
+  server.tool(
+    "list_tables",
+    {
+      database: z.string().optional().describe("Optional database name (uses current database if not specified)"),
+      schema: z.string().optional().describe("Optional schema name (uses current schema if not specified)")
+    },
+    async ({ database, schema }) => {
+      logger.info('Tool execution request received', { tool: "list_tables", database, schema });
+      
+      try {
+        let listTablesQuery = "SHOW TABLES";
+        if (database && schema) {
+          listTablesQuery = `SHOW TABLES IN ${database}.${schema}`;
+        } else if (schema) {
+          listTablesQuery = `SHOW TABLES IN SCHEMA ${schema}`;
+        } else if (database) {
+          listTablesQuery = `SHOW TABLES IN DATABASE ${database}`;
+        }
+        
+        const result = await executeQuery(connection, listTablesQuery);
+        logger.info('List tables executed successfully');
+        
+        return {
+          content: [{ type: "text", text: formatToolResult(result) }]
+        };
+      } catch (error) {
+        logger.error('Error listing tables', { error: error.message });
+        const suggestion = getSuggestionForError("list_tables", error);
+        return {
+          content: [{ type: "text", text: `Error: ${error.message}\n\n${suggestion}` }]
+        };
+      }
+    }
+  );
+  
+  // Register describe_table tool
+  server.tool(
+    "describe_table",
+    {
+      table_name: z.string().describe("Name of table to describe (can be fully qualified)")
+    },
+    async ({ table_name }) => {
+      logger.info('Tool execution request received', { tool: "describe_table", table_name });
+      
+      try {
+        const result = await executeQuery(connection, `DESCRIBE TABLE ${table_name}`);
+        logger.info('Describe table executed successfully');
+        
+        return {
+          content: [{ type: "text", text: formatToolResult(result) }]
+        };
+      } catch (error) {
+        logger.error('Error describing table', { error: error.message });
+        const suggestion = getSuggestionForError("describe_table", error);
+        return {
+          content: [{ type: "text", text: `Error: ${error.message}\n\n${suggestion}` }]
+        };
+      }
+    }
+  );
+  
+  // Register get_query_history tool
+  server.tool(
+    "get_query_history",
+    {
+      limit: z.number().optional().describe("Maximum number of queries to return (default: 10)")
+    },
+    async ({ limit = 10 }) => {
+      logger.info('Tool execution request received', { tool: "get_query_history", limit });
+      
+      try {
+        const result = await executeQuery(connection, 
+          `SELECT QUERY_ID, QUERY_TEXT, DATABASE_NAME, SCHEMA_NAME, 
+                  EXECUTION_STATUS, START_TIME, END_TIME, TOTAL_ELAPSED_TIME 
+           FROM TABLE(INFORMATION_SCHEMA.QUERY_HISTORY_BY_USER()) 
+           ORDER BY START_TIME DESC 
+           LIMIT ${limit}`);
+        logger.info('Get query history executed successfully');
+        
+        return {
+          content: [{ type: "text", text: formatToolResult(result) }]
+        };
+      } catch (error) {
+        logger.error('Error getting query history', { error: error.message });
+        const suggestion = getSuggestionForError("get_query_history", error);
+        return {
+          content: [{ type: "text", text: `Error: ${error.message}\n\n${suggestion}` }]
+        };
+      }
+    }
+  );
+  
+  // Register get_user_roles tool
+  server.tool(
+    "get_user_roles",
+    {},
+    async () => {
+      logger.info('Tool execution request received', { tool: "get_user_roles" });
+      
+      try {
+        const result = await executeQuery(connection, "SHOW ROLES");
+        logger.info('Get user roles executed successfully');
+        
+        return {
+          content: [{ type: "text", text: formatToolResult(result) }]
+        };
+      } catch (error) {
+        logger.error('Error getting user roles', { error: error.message });
+        const suggestion = getSuggestionForError("get_user_roles", error);
+        return {
+          content: [{ type: "text", text: `Error: ${error.message}\n\n${suggestion}` }]
+        };
+      }
+    }
+  );
+  
+  // Register get_table_sample tool
+  server.tool(
+    "get_table_sample",
+    {
+      table_name: z.string().describe("Name of table to sample (can be fully qualified)"),
+      limit: z.number().optional().describe("Maximum number of rows to return (default: 10)")
+    },
+    async ({ table_name, limit = 10 }) => {
+      logger.info('Tool execution request received', { tool: "get_table_sample", table_name, limit });
+      
+      try {
+        const result = await executeQuery(connection, `SELECT * FROM ${table_name} LIMIT ${limit}`);
+        logger.info('Get table sample executed successfully');
+        
+        return {
+          content: [{ type: "text", text: formatToolResult(result) }]
+        };
+      } catch (error) {
+        logger.error('Error getting table sample', { error: error.message });
+        const suggestion = getSuggestionForError("get_table_sample", error);
+        return {
+          content: [{ type: "text", text: `Error: ${error.message}\n\n${suggestion}` }]
+        };
+      }
+    }
+  );
 }
 
 /**

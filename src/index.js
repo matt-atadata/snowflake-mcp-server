@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
-import { Server, StdioServerTransport } from '@modelcontextprotocol/server';
+import { McpServer } from '@modelcontextprotocol/sdk/server/mcp.js';
+import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import dotenv from 'dotenv';
 import fs from 'fs';
 import path from 'path';
@@ -63,15 +64,9 @@ async function main() {
     logger.info('Starting Snowflake MCP Server...');
     
     // Create MCP server with stdio transport (required for Windsurf)
-    const server = new Server({
+    const server = new McpServer({
       name: process.env.SERVER_NAME || 'snowflake-mcp-server',
       version: process.env.SERVER_VERSION || '1.0.0'
-    }, {
-      capabilities: {
-        tools: {},
-        resources: {},
-        logging: {}
-      }
     });
 
     // Initialize Snowflake connection
@@ -89,12 +84,8 @@ async function main() {
     const transport = new StdioServerTransport();
     await server.connect(transport);
     
-    // Send a logging notification to the client
-    server.loggingNotification({
-      level: 'info',
-      logger: 'snowflake-mcp-server',
-      data: 'Snowflake MCP Server started successfully'
-    });
+    // Log server start (SDK handles notifications differently)
+    logger.info('Snowflake MCP Server started successfully');
     
     logger.info('Snowflake MCP Server started successfully');
   } catch (error) {
