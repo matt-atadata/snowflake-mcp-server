@@ -1,0 +1,8 @@
+[2025-03-11T23:01:59.435Z] Starting MCP Inspector debug script
+[2025-03-11T23:01:59.449Z] MCP SDK version: 1.6.1
+[2025-03-11T23:01:59.450Z] SDK directory contents: ["LICENSE","README.md","dist","node_modules","package.json"]
+[2025-03-11T23:01:59.450Z] SDK dist directory contents: ["cjs","esm"]
+[2025-03-11T23:01:59.451Z] SDK ESM directory contents: ["cli.d.ts","cli.d.ts.map","cli.js","cli.js.map","client","inMemory.d.ts","inMemory.d.ts.map","inMemory.js","inMemory.js.map","package.json","server","shared","types.d.ts","types.d.ts.map","types.js","types.js.map"]
+[2025-03-11T23:01:59.451Z] SDK server directory contents: ["auth","completable.d.ts","completable.d.ts.map","completable.js","completable.js.map","index.d.ts","index.d.ts.map","index.js","index.js.map","mcp.d.ts","mcp.d.ts.map","mcp.js","mcp.js.map","sse.d.ts","sse.d.ts.map","sse.js","sse.js.map","stdio.d.ts","stdio.d.ts.map","stdio.js","stdio.js.map"]
+[2025-03-11T23:01:59.451Z] MCP Inspector version: 0.3.0
+[2025-03-11T23:01:59.451Z] MCP Inspector debug script completed
