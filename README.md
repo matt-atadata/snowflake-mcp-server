@@ -1,200 +1,344 @@
-# Snowflake MCP Server for Windsurf
+# Snowflake MCP Server (Python Implementation)
 
-A Model Context Protocol (MCP) Server implementation that provides database interaction with Snowflake, tailored for Windsurf. This server enables running SQL queries and retrieving metadata from Snowflake databases through a standardized protocol interface. Built using the `@modelcontextprotocol/sdk` package.
+A Model Context Protocol (MCP) server for Snowflake using FastMCP. This server provides access to Snowflake data through a standardized interface that can be used by LLM applications like Claude, Windsurf, and other MCP-compatible clients.
 
 ## Features
 
-- **MCP SDK Integration**: Built using the official `@modelcontextprotocol/sdk` package
-- **Stdio Transport**: Implements the required transport mechanism for Windsurf
-- **Keypair Authentication**: Supports secure connection to Snowflake using private key authentication
-- **Metadata Exposure**: Provides comprehensive metadata needed for generating SQL & Python in Windsurf
-- **Query Execution**: Enables running SQL queries on Snowflake and returning structured results
-- **Insights Memo**: Maintains a memo of data insights discovered during analysis
-- **Structured Logging**: Uses Winston for comprehensive logging with configurable levels
-- **Error Handling**: Robust error handling with helpful suggestions for troubleshooting
-- **Schema Validation**: Uses Zod for input validation of tool parameters
+- **Native MCP Implementation**: Clean, simplified implementation using FastMCP without FastAPI dependencies
+- **Snowflake Integration**: Execute SQL queries against Snowflake and explore database structure
+- **MCP Inspector Support**: Built-in support for the FastMCP Inspector for testing and debugging
+- **Secure**: Uses environment variables for sensitive credentials
+- **Modular Design**: Clean separation of concerns for easy maintenance and extension
+- **Wide Client Compatibility**: Works with various MCP clients including Claude Desktop, Windsurf, and other MCP-compatible applications
 
-## Tools
+## Prerequisites
 
-### Query Tools
-- `read_query`: Execute SELECT queries to read data from Snowflake
-- `write_query`: Execute INSERT, UPDATE, or DELETE queries in Snowflake
-- `create_table`: Create new tables in Snowflake
-- `execute_ddl`: Execute DDL statements like CREATE VIEW, ALTER TABLE, etc.
-
-### Schema Tools
-- `list_databases`: Get a list of all accessible databases in Snowflake
-- `list_schemas`: Get a list of all schemas in the current or specified database
-- `list_tables`: Get a list of all tables in the current schema or specified schema
-- `describe_table`: View column information for a specific table
-- `get_query_history`: Retrieve recent query history for the current user
-- `get_user_roles`: Get all roles assigned to the current user
-- `get_table_sample`: Get a sample of data from a table
-
-### Analysis Tools
-- `append_insight`: Add new data insights to the memo resource with optional categorization
-- `clear_insights`: Clear all insights from the memo resource
-
-## Resources
-
-- `memo://insights`: A continuously updated data insights memo that aggregates discovered insights during analysis
-- `snowflake://metadata/databases`: List of all accessible Snowflake databases
-- `snowflake://metadata/schemas`: List of all schemas in the current database
-- `snowflake://metadata/tables`: List of all tables in the current schema
-- `snowflake://metadata/user_info`: Information about the current Snowflake user, including roles and privileges
+- Python 3.8+
+- Snowflake account with appropriate credentials
+- FastMCP library
 
 ## Installation
 
 1. Clone this repository:
-```bash
-git clone https://github.com/yourusername/snowflake-mcp-server.git
-cd snowflake-mcp-server
-```
+   ```bash
+   git clone https://github.com/yourusername/snowflake-mcp-server.git
+   cd snowflake-mcp-server/python_implementation
+   ```
 
-2. Install dependencies:
-```bash
-npm install
-```
+2. Create a virtual environment:
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
 
-This will install all required dependencies including `@modelcontextprotocol/sdk`, `snowflake-sdk`, `winston`, and `zod`.
+3. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-3. Configure your Snowflake connection:
-```bash
-cp .env.example .env
-```
-
-4. Edit the `.env` file with your Snowflake credentials:
-```
-# Snowflake Connection Parameters
-SNOWFLAKE_ACCOUNT=your_account_identifier
-SNOWFLAKE_USERNAME=your_username
-SNOWFLAKE_PASSWORD=your_password  # Optional if using private key
-SNOWFLAKE_WAREHOUSE=your_warehouse
-SNOWFLAKE_DATABASE=your_database
-SNOWFLAKE_SCHEMA=your_schema
-SNOWFLAKE_ROLE=your_role
-
-# Optional: Path to private key for keypair authentication
-SNOWFLAKE_PRIVATE_KEY_PATH=/path/to/your/private/key.p8
-
-# Logging Configuration
-LOG_LEVEL=info  # Options: error, warn, info, http, verbose, debug, silly
-```
+4. Create a `.env` file with your Snowflake credentials:
+   ```
+   SNOWFLAKE_ACCOUNT=your_account
+   SNOWFLAKE_USER=your_username
+   SNOWFLAKE_PASSWORD=your_password
+   SNOWFLAKE_ROLE=your_role
+   SNOWFLAKE_WAREHOUSE=your_warehouse
+   SNOWFLAKE_DATABASE=your_database
+   SNOWFLAKE_SCHEMA=your_schema
+   ```
 
 ## Usage
 
-### Starting the Server
+### Running the Snowflake MCP Server
 
-Start the server in development mode:
+You can run the server in two modes:
+
+#### 1. Standalone Mode
+
+This mode runs just the Snowflake MCP server:
+
 ```bash
-npm run dev
+python snowflake_mcp_server.py [--allow-write] [--port PORT]
 ```
 
-Start the server in production mode:
+Options:
+- `--allow-write`: Allow write operations (not recommended for production)
+- `--port`: Port for the MCP server (default: 8001)
+
+#### 2. FastMCP Inspector Mode
+
+This mode runs the Snowflake MCP server with the FastMCP Inspector for testing and debugging:
+
 ```bash
-npm start
+./run_snowflake_inspector.sh
 ```
 
-### Using with Windsurf
+This will:
+1. Check and kill any processes using ports 3000, 5173, and 8001
+2. Set the `FASTMCP_PYTHON_COMMAND=python` environment variable to avoid `uv` errors
+3. Start the MCP server on port 8001
+4. Launch the FastMCP Inspector UI at http://localhost:5173
 
-To use this server with Windsurf:
+The Inspector UI provides a user-friendly interface to:
+- View available tools and resources
+- Test tool execution
+- Explore server capabilities
+- Debug MCP interactions
 
-1. Start the server as described above
-2. Configure Windsurf to connect to this MCP server
-3. Use the provided tools and resources in your Windsurf sessions
+## Available Tools
 
-### Example Tool Usage
+The Snowflake MCP server provides the following tools:
 
-#### Running a SELECT Query
+### 1. Query Tool
 
-```json
-{
-  "name": "read_query",
-  "args": {
-    "query": "SELECT * FROM my_table LIMIT 10"
-  }
-}
+Execute SQL queries against Snowflake:
+
+```
+execute_query(query: str, limit_rows: int = 1000) -> QueryResult
 ```
 
-#### Adding an Insight
-
-```json
-{
-  "name": "append_insight",
-  "args": {
-    "insight": "The sales data shows a 15% increase in Q4 compared to Q3",
-    "category": "Sales Analysis"
-  }
-}
+Example:
+```sql
+SELECT * FROM my_database.my_schema.my_table LIMIT 10
 ```
 
-## Configuration
+### 2. Schema Tools
 
-### Environment Variables
+Explore the Snowflake database structure:
 
-The server can be configured using the following environment variables:
+```
+list_databases() -> List[str]
+list_schemas(database: str) -> List[str]
+list_tables(database: str, schema: str) -> List[TableInfo]
+get_table_schema(database_name: str, schema_name: str, table_name: str) -> TableDescription
+```
 
-| Variable | Description | Required | Default |
-|----------|-------------|----------|--------|
-| `SNOWFLAKE_ACCOUNT` | Snowflake account identifier | Yes | - |
-| `SNOWFLAKE_USERNAME` | Snowflake username | Yes | - |
-| `SNOWFLAKE_PASSWORD` | Snowflake password | No* | - |
-| `SNOWFLAKE_WAREHOUSE` | Snowflake warehouse | Yes | - |
-| `SNOWFLAKE_DATABASE` | Default database | Yes | - |
-| `SNOWFLAKE_SCHEMA` | Default schema | Yes | - |
-| `SNOWFLAKE_ROLE` | Snowflake role | Yes | - |
-| `SNOWFLAKE_PRIVATE_KEY_PATH` | Path to private key file | No* | - |
-| `LOG_LEVEL` | Logging level | No | info |
+### 3. Server Info Tool
 
-*Either `SNOWFLAKE_PASSWORD` or `SNOWFLAKE_PRIVATE_KEY_PATH` must be provided.
+Get information about the server:
+
+```
+server_info() -> Dict[str, Any]
+```
+
+## Project Structure
+
+```
+snowflake-mcp-server/
+├── python_implementation/
+│   ├── .env                         # Environment variables (create this file)
+│   ├── .env.example                 # Example environment variables
+│   ├── requirements.txt             # Python dependencies
+│   ├── setup.py                     # Package setup
+│   ├── README.md                    # This documentation
+│   ├── snowflake_mcp_server.py      # Main Snowflake MCP server implementation
+│   ├── snowflake_mcp_inspector.py   # Entry point for the MCP Inspector
+│   ├── run_snowflake_inspector.sh   # Script to run the MCP Inspector
+│   ├── archive/                     # Archived files (old implementations)
+│   └── snowflake_mcp/               # Package directory
+```
 
 ## Development
 
-### Running Tests
+### Adding New Tools
 
-Run all tests:
-```bash
-npm test
+To add a new tool to the server, add a new function in the `snowflake_mcp_server.py` file and decorate it with `@server.tool()`:
+
+```python
+@server.tool("my_new_tool")
+def my_new_tool(param1: str, param2: int) -> Dict[str, Any]:
+    """
+    Description of my new tool.
+    
+    Args:
+        param1: Description of param1
+        param2: Description of param2
+    
+    Returns:
+        Description of the return value
+    """
+    # Implementation
+    return {"result": "success"}
 ```
 
-Run tests with coverage:
-```bash
-npm run test:coverage
+## Integrating with Windsurf
+
+To use this server with Windsurf:
+
+1. Configure Windsurf to use this server in the MCP configuration:
+   ```json
+   {
+     "name": "Snowflake MCP",
+     "command": "/path/to/python",
+     "args": ["/path/to/snowflake-mcp-server/python_implementation/snowflake_mcp_server.py", "--port", "8091"],
+     "env": {},
+     "mcp_url": "http://localhost:8091"
+   }
+   ```
+
+2. Make sure to use non-default ports (e.g., 8091) to avoid conflicts with other services.
+
+3. Ensure the full path to Python is specified (use `which python` to find it).
+
+#### Installation and Configuration
+
+1. **Start by configuring your Snowflake credentials**:
+
+   Create a `.env` file in the `python_implementation` directory with your Snowflake credentials:
+
+   ```
+   SNOWFLAKE_ACCOUNT=your_account_id
+   SNOWFLAKE_USER=your_username
+   SNOWFLAKE_PASSWORD=your_password
+   SNOWFLAKE_ROLE=your_role
+   SNOWFLAKE_WAREHOUSE=your_warehouse
+   SNOWFLAKE_DATABASE=your_database
+   SNOWFLAKE_SCHEMA=your_schema
+   ```
+
+2. **Configure MCP Servers in Windsurf**:
+
+   a. Open Windsurf
+   
+   b. Open Cascade by pressing `⌘L`
+   
+   c. Access the MCP configuration by clicking the hammer icon (🔨) in the toolbar above Cascade, then click "Configure"
+   
+   d. This opens `~/.codeium/windsurf/mcp_config.json` in the editor
+   
+   e. Add the Snowflake MCP server configuration:
+
+   ```json
+   {
+     "mcpServers": {
+       "snowflake": {
+         "command": "/path/to/python/venv/bin/python",
+         "args": [
+           "/path/to/snowflake-mcp-server/python_implementation/snowflake_server.py",
+           "--port", "9090",
+           "--mcp-port", "8000"
+         ],
+         "env": {
+           "PORT": "8000"
+         },
+         "cwd": "/path/to/snowflake-mcp-server/python_implementation"
+       }
+     }
+   }
+   ```
+
+   > **Important**: Use the full path to your Python executable, as Windsurf may not inherit your shell's PATH environment. You can find your Python path by running `which python` in your terminal.
+
+   > **Note**: Replace `/path/to/snowflake-mcp-server` with the actual path to your cloned repository
+
+3. **Save the configuration file**
+
+4. **Click "Refresh" (🔄) in the MCP toolbar in Cascade**
+
+   If successful, you should see "1 available MCP server" (or more if you have other servers configured)
+
+### Using Snowflake MCP Server with Cascade
+
+Once configured, you can interact with your Snowflake data using natural language through Cascade. Here are some example interactions:
+
+#### Example: Exploring Database Schema
+
+```
+User: List all tables in my Snowflake database
+
+Cascade: I'll help you list all the tables in your Snowflake database.
+> MCP Tool: snowflake / list_tables
+> I found the following tables in your Snowflake database:
+> - customers (in the public schema)
+> - orders (in the public schema)
+> - products (in the public schema)
+> Would you like to see more details about any of these tables?
+
+User: Show me the schema of the customers table
+
+Cascade: I'll retrieve the schema information for the customers table.
+> MCP Tool: snowflake / describe_table
+> Here's the schema for the customers table:
+> - customer_id: INTEGER (Primary Key)
+> - name: VARCHAR(100)
+> - email: VARCHAR(100)
+> - signup_date: DATE
+> - last_order_date: DATE
+> Is there anything specific you'd like to know about this table?
 ```
 
-### Linting
+#### Example: Running a Query
 
-Lint the codebase:
-```bash
-npm run lint
+```
+User: Find the top 5 customers by order value
+
+Cascade: I'll run a query to find the top 5 customers by total order value.
+> MCP Tool: snowflake / read_query
+> Here are the top 5 customers by order value:
+> | customer_id | name | total_order_value |
+> |------------|------|-------------------|
+> | 1042 | John Smith | $12,450.75 |
+> | 985 | Sarah Johnson | $8,720.50 |
+> | 1137 | Michael Brown | $7,890.25 |
+> | 763 | Emily Davis | $6,540.80 |
+> | 1256 | Robert Wilson | $5,980.15 |
+> Would you like to see more information about any of these customers?
 ```
 
-Fix linting issues automatically:
-```bash
-npm run lint:fix
+### Available Tools
+
+The Snowflake MCP server exposes the following tools for interacting with your Snowflake database:
+
+#### Query Tools
+- `read_query`: Execute SELECT queries to read data
+- `write_query`: Execute INSERT, UPDATE, or DELETE queries (only with --allow-write flag)
+- `create_table`: Create new tables (only with --allow-write flag)
+
+#### Schema Tools
+- `list_tables`: Get a list of all tables in the database
+- `describe_table`: View column information for a specific table
+
+#### Analysis Tools
+- `append_insight`: Add new data insights to the memo resource
+
+### Security Considerations
+
+- Keep your Snowflake credentials secure and never share them publicly
+- Consider using the least privileged role necessary for your tasks
+- For production use, consider implementing additional authentication mechanisms
+
+## Claude Desktop Integration
+
+To use this server with Claude Desktop, add the following to your Claude Desktop configuration file:
+
+```json
+"mcpServers": {
+  "snowflake_local": {
+      "command": "python",
+      "args": [
+          "/absolute/path/to/snowflake_server.py",
+          "--port",
+          "8080",
+          "--mcp-port",
+          "8000",
+          "--account",
+          "the_account",
+          "--warehouse",
+          "the_warehouse",
+          "--user",
+          "the_user",
+          "--password",
+          "their_password",
+          "--role",
+          "the_role",
+          "--database",
+          "the_database",
+          "--schema",
+          "the_schema"
+          # Optionally: "--allow-write" (but not recommended)
+      ]
+  }
+}
 ```
 
-### Code Formatting
-
-Format the code using Prettier:
-```bash
-npm run format
-```
-
-## Continuous Integration
-
-This project uses GitHub Actions for continuous integration. The CI pipeline runs on each push and pull request to the main branch, performing the following checks:
-
-- Linting with ESLint
-- Unit and integration tests with Mocha
-- Code coverage reporting with c8
-
-## Testing with MCP Inspector
-
-You can test the server using the [MCP Inspector](https://github.com/modelcontextprotocol/inspector):
-
-```bash
-npx @modelcontextprotocol/inspector
-```
-
-Then connect to your running server and explore the available tools and resources.
+Note: The server uses a dual-server approach with FastAPI serving the index page on port 8080 and FastMCP handling the Model Context Protocol on port 8000.

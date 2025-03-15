@@ -1,0 +1,269 @@
+2025-03-13 09:33:16,691 - snowflake_mcp_server - INFO - Loaded environment variables from .env file
+2025-03-13 09:33:16,945 - snowflake_mcp_server - INFO - FastMCP imported successfully
+2025-03-13 09:34:17,204 - snowflake_mcp_server - INFO - Loaded environment variables from .env file
+2025-03-13 09:34:17,204 - snowflake_mcp_server - INFO - FastMCP imported successfully
+2025-03-13 09:34:20,358 - mcp.server.lowlevel.server - INFO - Processing request of type ListToolsRequest
+2025-03-13 09:34:24,329 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-03-13 09:34:24,331 - snowflake_mcp_server - INFO - Getting server info
+2025-03-13 09:35:33,832 - snowflake_mcp_server - INFO - Loaded environment variables from .env file
+2025-03-13 09:35:34,077 - snowflake_mcp_server - INFO - FastMCP imported successfully
+2025-03-13 09:40:41,647 - snowflake_mcp_server - INFO - Loaded environment variables from .env file
+2025-03-13 09:40:41,647 - snowflake_mcp_server - INFO - FastMCP imported successfully
+2025-03-13 09:40:45,329 - mcp.server.lowlevel.server - INFO - Processing request of type ListToolsRequest
+2025-03-13 09:40:51,651 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-03-13 09:40:51,653 - snowflake_mcp_server - INFO - Getting server info
+2025-03-13 09:40:51,672 - snowflake.connector.connection - INFO - Snowflake Connector for Python Version: 3.14.0, Python Version: 3.13.2, Platform: macOS-15.3.1-arm64-arm-64bit-Mach-O
+2025-03-13 09:40:51,680 - snowflake.connector.connection - INFO - Connecting to GLOBAL Snowflake domain
+2025-03-13 09:40:51,680 - snowflake.connector.connection - INFO - This connection is in OCSP Fail Open Mode. TLS Certificates would be checked for validity and revocation status. Any other Certificate Revocation related exceptions or OCSP Responder failures would be disregarded in favor of connectivity.
+2025-03-13 09:40:53,049 - snowflake_mcp_server - INFO - Successfully set role to APP_BUILDER_ROLE
+2025-03-13 09:40:53,372 - snowflake_mcp_server - WARNING - Insufficient privileges to use warehouse COMPUTE_WH. Some operations may fail.
+2025-03-13 09:40:53,372 - snowflake_mcp_server - WARNING - Consider using a different role or warehouse with appropriate permissions.
+2025-03-13 09:40:54,001 - snowflake_mcp_server - INFO - Found alternative warehouse: APP_BUILDER_WH
+2025-03-13 09:40:54,193 - snowflake_mcp_server - WARNING - Could not set database to SNOWBITS_DEMO_DB: 003001 (42501): 01bafb70-0004-c041-0000-3cf70022a00e: SQL access control error:
+Insufficient privileges to operate on database 'SNOWBITS_DEMO_DB'
+2025-03-13 09:40:54,388 - snowflake_mcp_server - WARNING - Could not set schema to PUBLIC: 002043 (02000): 01bafb70-0004-bdac-0000-3cf7002284e2: SQL compilation error:
+Object does not exist, or operation cannot be performed.
+2025-03-13 09:40:55,190 - snowflake_mcp_server - INFO - Connected to Snowflake using role APP_BUILDER_ROLE
+2025-03-13 09:41:57,796 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-03-13 09:41:57,799 - snowflake_mcp_server - INFO - Listing schemas in database: SNOWBITS_DEMO_DB
+2025-03-13 09:41:57,814 - snowflake.connector.connection - INFO - Snowflake Connector for Python Version: 3.14.0, Python Version: 3.13.2, Platform: macOS-15.3.1-arm64-arm-64bit-Mach-O
+2025-03-13 09:41:57,825 - snowflake.connector.connection - INFO - Connecting to GLOBAL Snowflake domain
+2025-03-13 09:41:57,826 - snowflake.connector.connection - INFO - This connection is in OCSP Fail Open Mode. TLS Certificates would be checked for validity and revocation status. Any other Certificate Revocation related exceptions or OCSP Responder failures would be disregarded in favor of connectivity.
+2025-03-13 09:41:58,678 - snowflake_mcp_server - INFO - Successfully set role to APP_BUILDER_ROLE
+2025-03-13 09:41:58,824 - snowflake_mcp_server - WARNING - Insufficient privileges to use warehouse COMPUTE_WH. Some operations may fail.
+2025-03-13 09:41:58,824 - snowflake_mcp_server - WARNING - Consider using a different role or warehouse with appropriate permissions.
+2025-03-13 09:41:59,445 - snowflake_mcp_server - INFO - Found alternative warehouse: APP_BUILDER_WH
+2025-03-13 09:41:59,607 - snowflake_mcp_server - WARNING - Could not set database to SNOWBITS_DEMO_DB: 003001 (42501): 01bafb71-0004-bdac-0000-3cf7002284fe: SQL access control error:
+Insufficient privileges to operate on database 'SNOWBITS_DEMO_DB'
+2025-03-13 09:41:59,784 - snowflake_mcp_server - WARNING - Could not set schema to PUBLIC: 002043 (02000): 01bafb71-0004-c041-0000-3cf70022a02a: SQL compilation error:
+Object does not exist, or operation cannot be performed.
+2025-03-13 09:42:00,558 - snowflake_mcp_server - INFO - Connected to Snowflake using role APP_BUILDER_ROLE
+2025-03-13 09:42:00,782 - snowflake_mcp_server - WARNING - Could not list schemas using JDBC metadata: 'SnowflakeConnection' object has no attribute '_connection'
+2025-03-13 09:50:31,594 - snowflake_mcp_server - INFO - Loaded environment variables from .env file
+2025-03-13 09:50:31,874 - snowflake_mcp_server - INFO - FastMCP imported successfully
+2025-03-13 09:50:31,887 - snowflake_mcp_server - INFO - Setting MCP server port to 8091
+2025-03-13 09:50:31,887 - snowflake_mcp_server - INFO - Setting FastAPI app port to 8090
+2025-03-13 09:50:31,888 - snowflake_mcp_server - INFO - Running Snowflake MCP server on port 8091
+2025-03-13 09:50:31,888 - snowflake_mcp_server - INFO - FastAPI app running on port 8090
+2025-03-13 09:50:31,888 - snowflake_mcp_server - INFO - Use 'fastmcp dev snowflake_mcp_inspector.py' to connect with the MCP Inspector
+2025-03-13 09:50:31,888 - snowflake_mcp_server - INFO - For Windsurf integration, ensure mcp_config.json specifies the full Python path and matching ports
+2025-03-13 09:50:31,889 - snowflake_mcp_server - INFO - Snowflake connector is available. Server can connect to Snowflake.
+2025-03-13 09:51:04,921 - snowflake_mcp_server - INFO - Loaded environment variables from .env file
+2025-03-13 09:51:04,922 - snowflake_mcp_server - INFO - FastMCP imported successfully
+2025-03-13 09:51:07,115 - mcp.server.lowlevel.server - INFO - Processing request of type ListToolsRequest
+2025-03-13 09:51:13,982 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-03-13 09:51:13,983 - snowflake_mcp_server - INFO - Getting server info
+2025-03-13 09:51:13,997 - snowflake.connector.connection - INFO - Snowflake Connector for Python Version: 3.14.0, Python Version: 3.13.2, Platform: macOS-15.3.1-arm64-arm-64bit-Mach-O
+2025-03-13 09:51:14,002 - snowflake.connector.connection - INFO - Connecting to GLOBAL Snowflake domain
+2025-03-13 09:51:14,003 - snowflake.connector.connection - INFO - This connection is in OCSP Fail Open Mode. TLS Certificates would be checked for validity and revocation status. Any other Certificate Revocation related exceptions or OCSP Responder failures would be disregarded in favor of connectivity.
+2025-03-13 09:51:14,971 - snowflake_mcp_server - INFO - Successfully set role to APP_BUILDER_ROLE
+2025-03-13 09:51:15,178 - snowflake_mcp_server - WARNING - Insufficient privileges to use warehouse COMPUTE_WH. Some operations may fail.
+2025-03-13 09:51:15,179 - snowflake_mcp_server - WARNING - Consider using a different role or warehouse with appropriate permissions.
+2025-03-13 09:51:15,845 - snowflake_mcp_server - INFO - Found alternative warehouse: APP_BUILDER_WH
+2025-03-13 09:51:16,028 - snowflake_mcp_server - WARNING - Could not set database to SNOWBITS_DEMO_DB: 003001 (42501): 01bafb7b-0004-bdac-0000-3cf700228566: SQL access control error:
+Insufficient privileges to operate on database 'SNOWBITS_DEMO_DB'
+2025-03-13 09:51:16,202 - snowflake_mcp_server - WARNING - Could not set schema to PUBLIC: 002043 (02000): 01bafb7b-0004-c041-0000-3cf70022a0a6: SQL compilation error:
+Object does not exist, or operation cannot be performed.
+2025-03-13 09:51:16,852 - snowflake_mcp_server - INFO - Connected to Snowflake using role APP_BUILDER_ROLE
+2025-03-13 09:51:58,544 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-03-13 09:51:58,546 - snowflake_mcp_server - INFO - Listing schemas in database: SNOWBITS_DEMO_DB
+2025-03-13 09:51:58,563 - snowflake.connector.connection - INFO - Snowflake Connector for Python Version: 3.14.0, Python Version: 3.13.2, Platform: macOS-15.3.1-arm64-arm-64bit-Mach-O
+2025-03-13 09:51:58,565 - snowflake.connector.connection - INFO - Connecting to GLOBAL Snowflake domain
+2025-03-13 09:51:58,566 - snowflake.connector.connection - INFO - This connection is in OCSP Fail Open Mode. TLS Certificates would be checked for validity and revocation status. Any other Certificate Revocation related exceptions or OCSP Responder failures would be disregarded in favor of connectivity.
+2025-03-13 09:51:59,482 - snowflake_mcp_server - INFO - Successfully set role to APP_BUILDER_ROLE
+2025-03-13 09:51:59,682 - snowflake_mcp_server - WARNING - Insufficient privileges to use warehouse COMPUTE_WH. Some operations may fail.
+2025-03-13 09:51:59,682 - snowflake_mcp_server - WARNING - Consider using a different role or warehouse with appropriate permissions.
+2025-03-13 09:52:00,051 - snowflake_mcp_server - INFO - Found alternative warehouse: APP_BUILDER_WH
+2025-03-13 09:52:00,206 - snowflake_mcp_server - WARNING - Could not set database to SNOWBITS_DEMO_DB: 003001 (42501): 01bafb7c-0004-c041-0000-3cf70022a0c2: SQL access control error:
+Insufficient privileges to operate on database 'SNOWBITS_DEMO_DB'
+2025-03-13 09:52:00,380 - snowflake_mcp_server - WARNING - Could not set schema to PUBLIC: 002043 (02000): 01bafb7c-0004-bdac-0000-3cf700228582: SQL compilation error:
+Object does not exist, or operation cannot be performed.
+2025-03-13 09:52:01,193 - snowflake_mcp_server - INFO - Connected to Snowflake using role APP_BUILDER_ROLE
+2025-03-13 09:52:01,411 - snowflake_mcp_server - WARNING - Could not list schemas using JDBC metadata: 'SnowflakeConnection' object has no attribute '_connection'
+2025-03-13 13:38:51,208 - snowflake_mcp_server - INFO - Loaded environment variables from .env file
+2025-03-13 13:38:51,208 - snowflake_mcp_server - INFO - FastMCP imported successfully
+2025-03-13 13:38:53,125 - mcp.server.lowlevel.server - INFO - Processing request of type ListToolsRequest
+2025-03-13 14:11:56,946 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-03-13 14:11:56,960 - snowflake_mcp_server - INFO - Describing user: matt
+2025-03-13 14:11:56,982 - snowflake.connector.connection - INFO - Snowflake Connector for Python Version: 3.14.0, Python Version: 3.13.2, Platform: macOS-15.3.1-arm64-arm-64bit-Mach-O
+2025-03-13 14:11:56,986 - snowflake.connector.connection - INFO - Connecting to GLOBAL Snowflake domain
+2025-03-13 14:11:56,986 - snowflake.connector.connection - INFO - This connection is in OCSP Fail Open Mode. TLS Certificates would be checked for validity and revocation status. Any other Certificate Revocation related exceptions or OCSP Responder failures would be disregarded in favor of connectivity.
+2025-03-13 14:11:58,285 - snowflake_mcp_server - INFO - Successfully set role to APP_BUILDER_ROLE
+2025-03-13 14:11:58,596 - snowflake_mcp_server - WARNING - Insufficient privileges to use warehouse COMPUTE_WH. Some operations may fail.
+2025-03-13 14:11:58,596 - snowflake_mcp_server - WARNING - Consider using a different role or warehouse with appropriate permissions.
+2025-03-13 14:11:59,138 - snowflake_mcp_server - INFO - Found alternative warehouse: APP_BUILDER_WH
+2025-03-13 14:11:59,344 - snowflake_mcp_server - WARNING - Could not set database to SNOWBITS_DEMO_DB: 003001 (42501): 01bafc7f-0004-bdac-0000-3cf70022859a: SQL access control error:
+Insufficient privileges to operate on database 'SNOWBITS_DEMO_DB'
+2025-03-13 14:11:59,491 - snowflake_mcp_server - WARNING - Could not set schema to PUBLIC: 002043 (02000): 01bafc7f-0004-c09d-0000-3cf70022b00e: SQL compilation error:
+Object does not exist, or operation cannot be performed.
+2025-03-13 14:12:00,245 - snowflake_mcp_server - INFO - Connected to Snowflake using role APP_BUILDER_ROLE
+2025-03-13 14:12:00,393 - snowflake_mcp_server - ERROR - Error describing user matt: 003001 (42501): 01bafc80-0004-bdac-0000-3cf7002285a6: SQL access control error:
+Insufficient privileges to operate on user 'MATT'
+2025-03-13 14:12:17,231 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-03-13 14:12:17,237 - snowflake_mcp_server - INFO - Describing table: issues
+2025-03-13 14:12:17,263 - snowflake.connector.connection - INFO - Snowflake Connector for Python Version: 3.14.0, Python Version: 3.13.2, Platform: macOS-15.3.1-arm64-arm-64bit-Mach-O
+2025-03-13 14:12:17,270 - snowflake.connector.connection - INFO - Connecting to GLOBAL Snowflake domain
+2025-03-13 14:12:17,270 - snowflake.connector.connection - INFO - This connection is in OCSP Fail Open Mode. TLS Certificates would be checked for validity and revocation status. Any other Certificate Revocation related exceptions or OCSP Responder failures would be disregarded in favor of connectivity.
+2025-03-13 14:12:18,310 - snowflake_mcp_server - INFO - Successfully set role to APP_BUILDER_ROLE
+2025-03-13 14:12:18,605 - snowflake_mcp_server - WARNING - Insufficient privileges to use warehouse COMPUTE_WH. Some operations may fail.
+2025-03-13 14:12:18,605 - snowflake_mcp_server - WARNING - Consider using a different role or warehouse with appropriate permissions.
+2025-03-13 14:12:19,143 - snowflake_mcp_server - INFO - Found alternative warehouse: APP_BUILDER_WH
+2025-03-13 14:12:19,335 - snowflake_mcp_server - WARNING - Could not set database to SNOWBITS_DEMO_DB: 003001 (42501): 01bafc80-0004-bdac-0000-3cf7002285b2: SQL access control error:
+Insufficient privileges to operate on database 'SNOWBITS_DEMO_DB'
+2025-03-13 14:12:19,520 - snowflake_mcp_server - WARNING - Could not set schema to PUBLIC: 002043 (02000): 01bafc80-0004-c09d-0000-3cf70022b026: SQL compilation error:
+Object does not exist, or operation cannot be performed.
+2025-03-13 14:12:20,367 - snowflake_mcp_server - INFO - Connected to Snowflake using role APP_BUILDER_ROLE
+2025-03-13 14:12:20,625 - snowflake_mcp_server - ERROR - Error describing table issues: 002003 (42S02): 01bafc80-0004-c09d-0000-3cf70022b032: SQL compilation error:
+Table 'ISSUES' does not exist or not authorized.
+2025-03-13 14:12:30,892 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-03-13 14:12:30,893 - snowflake_mcp_server - INFO - Describing table: jira_test.jira_data.issues
+2025-03-13 14:12:30,903 - snowflake.connector.connection - INFO - Snowflake Connector for Python Version: 3.14.0, Python Version: 3.13.2, Platform: macOS-15.3.1-arm64-arm-64bit-Mach-O
+2025-03-13 14:12:30,904 - snowflake.connector.connection - INFO - Connecting to GLOBAL Snowflake domain
+2025-03-13 14:12:30,905 - snowflake.connector.connection - INFO - This connection is in OCSP Fail Open Mode. TLS Certificates would be checked for validity and revocation status. Any other Certificate Revocation related exceptions or OCSP Responder failures would be disregarded in favor of connectivity.
+2025-03-13 14:12:31,654 - snowflake_mcp_server - INFO - Successfully set role to APP_BUILDER_ROLE
+2025-03-13 14:12:32,920 - snowflake_mcp_server - WARNING - Insufficient privileges to use warehouse COMPUTE_WH. Some operations may fail.
+2025-03-13 14:12:32,920 - snowflake_mcp_server - WARNING - Consider using a different role or warehouse with appropriate permissions.
+2025-03-13 14:12:33,377 - snowflake_mcp_server - INFO - Found alternative warehouse: APP_BUILDER_WH
+2025-03-13 14:12:33,537 - snowflake_mcp_server - WARNING - Could not set database to SNOWBITS_DEMO_DB: 003001 (42501): 01bafc80-0004-c09d-0000-3cf70022b03e: SQL access control error:
+Insufficient privileges to operate on database 'SNOWBITS_DEMO_DB'
+2025-03-13 14:12:33,714 - snowflake_mcp_server - WARNING - Could not set schema to PUBLIC: 002043 (02000): 01bafc80-0004-bdac-0000-3cf7002285ca: SQL compilation error:
+Object does not exist, or operation cannot be performed.
+2025-03-13 14:12:34,532 - snowflake_mcp_server - INFO - Connected to Snowflake using role APP_BUILDER_ROLE
+2025-03-13 14:26:27,576 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-03-13 14:26:27,579 - snowflake_mcp_server - INFO - Describing warehouse: compute_wh
+2025-03-13 14:26:27,594 - snowflake.connector.connection - INFO - Snowflake Connector for Python Version: 3.14.0, Python Version: 3.13.2, Platform: macOS-15.3.1-arm64-arm-64bit-Mach-O
+2025-03-13 14:26:27,596 - snowflake.connector.connection - INFO - Connecting to GLOBAL Snowflake domain
+2025-03-13 14:26:27,596 - snowflake.connector.connection - INFO - This connection is in OCSP Fail Open Mode. TLS Certificates would be checked for validity and revocation status. Any other Certificate Revocation related exceptions or OCSP Responder failures would be disregarded in favor of connectivity.
+2025-03-13 14:26:28,936 - snowflake_mcp_server - INFO - Successfully set role to APP_BUILDER_ROLE
+2025-03-13 14:26:29,254 - snowflake_mcp_server - WARNING - Insufficient privileges to use warehouse COMPUTE_WH. Some operations may fail.
+2025-03-13 14:26:29,254 - snowflake_mcp_server - WARNING - Consider using a different role or warehouse with appropriate permissions.
+2025-03-13 14:26:29,902 - snowflake_mcp_server - INFO - Found alternative warehouse: APP_BUILDER_WH
+2025-03-13 14:26:30,103 - snowflake_mcp_server - WARNING - Could not set database to SNOWBITS_DEMO_DB: 003001 (42501): 01bafc8e-0004-bdac-0000-3cf7002285e2: SQL access control error:
+Insufficient privileges to operate on database 'SNOWBITS_DEMO_DB'
+2025-03-13 14:26:30,417 - snowflake_mcp_server - WARNING - Could not set schema to PUBLIC: 002043 (02000): 01bafc8e-0004-c09d-0000-3cf70022b056: SQL compilation error:
+Object does not exist, or operation cannot be performed.
+2025-03-13 14:26:31,335 - snowflake_mcp_server - INFO - Connected to Snowflake using role APP_BUILDER_ROLE
+2025-03-13 14:26:31,518 - snowflake_mcp_server - ERROR - Error describing warehouse compute_wh: 003001 (42501): 01bafc8e-0004-bdac-0000-3cf7002285ee: SQL access control error:
+Insufficient privileges to operate on warehouse 'COMPUTE_WH'
+2025-03-13 14:26:47,108 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-03-13 14:26:47,109 - snowflake_mcp_server - INFO - Listing all roles
+2025-03-13 14:26:47,121 - snowflake.connector.connection - INFO - Snowflake Connector for Python Version: 3.14.0, Python Version: 3.13.2, Platform: macOS-15.3.1-arm64-arm-64bit-Mach-O
+2025-03-13 14:26:47,121 - snowflake.connector.connection - INFO - Connecting to GLOBAL Snowflake domain
+2025-03-13 14:26:47,121 - snowflake.connector.connection - INFO - This connection is in OCSP Fail Open Mode. TLS Certificates would be checked for validity and revocation status. Any other Certificate Revocation related exceptions or OCSP Responder failures would be disregarded in favor of connectivity.
+2025-03-13 14:26:47,881 - snowflake_mcp_server - INFO - Successfully set role to APP_BUILDER_ROLE
+2025-03-13 14:26:48,065 - snowflake_mcp_server - WARNING - Insufficient privileges to use warehouse COMPUTE_WH. Some operations may fail.
+2025-03-13 14:26:48,070 - snowflake_mcp_server - WARNING - Consider using a different role or warehouse with appropriate permissions.
+2025-03-13 14:26:48,480 - snowflake_mcp_server - INFO - Found alternative warehouse: APP_BUILDER_WH
+2025-03-13 14:26:48,617 - snowflake_mcp_server - WARNING - Could not set database to SNOWBITS_DEMO_DB: 003001 (42501): 01bafc8e-0004-bdac-0000-3cf7002285fe: SQL access control error:
+Insufficient privileges to operate on database 'SNOWBITS_DEMO_DB'
+2025-03-13 14:26:48,798 - snowflake_mcp_server - WARNING - Could not set schema to PUBLIC: 002043 (02000): 01bafc8e-0004-c09d-0000-3cf70022b06a: SQL compilation error:
+Object does not exist, or operation cannot be performed.
+2025-03-13 14:26:49,574 - snowflake_mcp_server - INFO - Connected to Snowflake using role APP_BUILDER_ROLE
+2025-03-13 15:06:34,842 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-03-13 15:06:34,847 - snowflake_mcp_server - INFO - Listing all schemas
+2025-03-13 15:06:34,862 - snowflake.connector.connection - INFO - Snowflake Connector for Python Version: 3.14.0, Python Version: 3.13.2, Platform: macOS-15.3.1-arm64-arm-64bit-Mach-O
+2025-03-13 15:06:34,867 - snowflake.connector.connection - INFO - Connecting to GLOBAL Snowflake domain
+2025-03-13 15:06:34,869 - snowflake.connector.connection - INFO - This connection is in OCSP Fail Open Mode. TLS Certificates would be checked for validity and revocation status. Any other Certificate Revocation related exceptions or OCSP Responder failures would be disregarded in favor of connectivity.
+2025-03-13 15:06:35,986 - snowflake_mcp_server - INFO - Successfully set role to APP_BUILDER_ROLE
+2025-03-13 15:06:36,167 - snowflake_mcp_server - WARNING - Insufficient privileges to use warehouse COMPUTE_WH. Some operations may fail.
+2025-03-13 15:06:36,167 - snowflake_mcp_server - WARNING - Consider using a different role or warehouse with appropriate permissions.
+2025-03-13 15:06:36,578 - snowflake_mcp_server - INFO - Found alternative warehouse: APP_BUILDER_WH
+2025-03-13 15:06:36,862 - snowflake_mcp_server - WARNING - Could not set database to SNOWBITS_DEMO_DB: 003001 (42501): 01bafcb6-0004-bdac-0000-3cf700228612: SQL access control error:
+Insufficient privileges to operate on database 'SNOWBITS_DEMO_DB'
+2025-03-13 15:06:37,018 - snowflake_mcp_server - WARNING - Could not set schema to PUBLIC: 002043 (02000): 01bafcb6-0004-bdac-0000-3cf700228616: SQL compilation error:
+Object does not exist, or operation cannot be performed.
+2025-03-13 15:06:37,714 - snowflake_mcp_server - INFO - Connected to Snowflake using role APP_BUILDER_ROLE
+2025-03-13 15:06:38,544 - snowflake.connector.connection - INFO - closed
+2025-03-13 15:06:38,654 - snowflake.connector.connection - INFO - No async queries seem to be running, deleting session
+2025-03-13 15:14:17,823 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-03-13 15:14:17,828 - snowflake_mcp_server - INFO - Listing all roles
+2025-03-13 15:14:17,845 - snowflake.connector.connection - INFO - Snowflake Connector for Python Version: 3.14.0, Python Version: 3.13.2, Platform: macOS-15.3.1-arm64-arm-64bit-Mach-O
+2025-03-13 15:14:17,847 - snowflake.connector.connection - INFO - Connecting to GLOBAL Snowflake domain
+2025-03-13 15:14:17,847 - snowflake.connector.connection - INFO - This connection is in OCSP Fail Open Mode. TLS Certificates would be checked for validity and revocation status. Any other Certificate Revocation related exceptions or OCSP Responder failures would be disregarded in favor of connectivity.
+2025-03-13 15:14:18,764 - snowflake_mcp_server - INFO - Successfully set role to APP_BUILDER_ROLE
+2025-03-13 15:14:18,940 - snowflake_mcp_server - WARNING - Insufficient privileges to use warehouse COMPUTE_WH. Some operations may fail.
+2025-03-13 15:14:18,941 - snowflake_mcp_server - WARNING - Consider using a different role or warehouse with appropriate permissions.
+2025-03-13 15:14:19,363 - snowflake_mcp_server - INFO - Found alternative warehouse: APP_BUILDER_WH
+2025-03-13 15:14:19,530 - snowflake_mcp_server - WARNING - Could not set database to SNOWBITS_DEMO_DB: 003001 (42501): 01bafcbe-0004-c09d-0000-3cf70022b09e: SQL access control error:
+Insufficient privileges to operate on database 'SNOWBITS_DEMO_DB'
+2025-03-13 15:14:19,694 - snowflake_mcp_server - WARNING - Could not set schema to PUBLIC: 002043 (02000): 01bafcbe-0004-bdac-0000-3cf70022862a: SQL compilation error:
+Object does not exist, or operation cannot be performed.
+2025-03-13 15:14:20,375 - snowflake_mcp_server - INFO - Connected to Snowflake using role APP_BUILDER_ROLE
+2025-03-13 15:14:20,729 - snowflake.connector.connection - INFO - closed
+2025-03-13 15:14:20,839 - snowflake.connector.connection - INFO - No async queries seem to be running, deleting session
+2025-03-13 15:24:51,253 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-03-13 15:24:51,265 - snowflake_mcp_server - INFO - Describing schema: jira_data
+2025-03-13 15:24:51,282 - snowflake.connector.connection - INFO - Snowflake Connector for Python Version: 3.14.0, Python Version: 3.13.2, Platform: macOS-15.3.1-arm64-arm-64bit-Mach-O
+2025-03-13 15:24:51,291 - snowflake.connector.connection - INFO - Connecting to GLOBAL Snowflake domain
+2025-03-13 15:24:51,292 - snowflake.connector.connection - INFO - This connection is in OCSP Fail Open Mode. TLS Certificates would be checked for validity and revocation status. Any other Certificate Revocation related exceptions or OCSP Responder failures would be disregarded in favor of connectivity.
+2025-03-13 15:24:52,212 - snowflake_mcp_server - INFO - Successfully set role to APP_BUILDER_ROLE
+2025-03-13 15:24:52,396 - snowflake_mcp_server - WARNING - Insufficient privileges to use warehouse COMPUTE_WH. Some operations may fail.
+2025-03-13 15:24:52,397 - snowflake_mcp_server - WARNING - Consider using a different role or warehouse with appropriate permissions.
+2025-03-13 15:24:52,759 - snowflake_mcp_server - INFO - Found alternative warehouse: APP_BUILDER_WH
+2025-03-13 15:24:52,922 - snowflake_mcp_server - WARNING - Could not set database to SNOWBITS_DEMO_DB: 003001 (42501): 01bafcc8-0004-bdac-0000-3cf700228646: SQL access control error:
+Insufficient privileges to operate on database 'SNOWBITS_DEMO_DB'
+2025-03-13 15:24:53,094 - snowflake_mcp_server - WARNING - Could not set schema to PUBLIC: 002043 (02000): 01bafcc8-0004-c09d-0000-3cf70022b0b2: SQL compilation error:
+Object does not exist, or operation cannot be performed.
+2025-03-13 15:24:53,903 - snowflake_mcp_server - INFO - Connected to Snowflake using role APP_BUILDER_ROLE
+2025-03-13 15:24:54,111 - snowflake_mcp_server - ERROR - Error describing schema jira_data: 090105 (22000): 01bafcc8-0004-c09d-0000-3cf70022b0be: Cannot perform DESCRIBE. This session does not have a current database. Call 'USE DATABASE', or use a qualified name.
+2025-03-13 15:24:54,368 - snowflake.connector.connection - INFO - closed
+2025-03-13 15:24:54,477 - snowflake.connector.connection - INFO - No async queries seem to be running, deleting session
+2025-03-13 15:25:08,067 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-03-13 15:25:08,068 - snowflake_mcp_server - INFO - Describing schema: jira_test.jira_data
+2025-03-13 15:25:08,077 - snowflake.connector.connection - INFO - Snowflake Connector for Python Version: 3.14.0, Python Version: 3.13.2, Platform: macOS-15.3.1-arm64-arm-64bit-Mach-O
+2025-03-13 15:25:08,079 - snowflake.connector.connection - INFO - Connecting to GLOBAL Snowflake domain
+2025-03-13 15:25:08,079 - snowflake.connector.connection - INFO - This connection is in OCSP Fail Open Mode. TLS Certificates would be checked for validity and revocation status. Any other Certificate Revocation related exceptions or OCSP Responder failures would be disregarded in favor of connectivity.
+2025-03-13 15:25:08,804 - snowflake_mcp_server - INFO - Successfully set role to APP_BUILDER_ROLE
+2025-03-13 15:25:08,992 - snowflake_mcp_server - WARNING - Insufficient privileges to use warehouse COMPUTE_WH. Some operations may fail.
+2025-03-13 15:25:08,992 - snowflake_mcp_server - WARNING - Consider using a different role or warehouse with appropriate permissions.
+2025-03-13 15:25:09,413 - snowflake_mcp_server - INFO - Found alternative warehouse: APP_BUILDER_WH
+2025-03-13 15:25:09,558 - snowflake_mcp_server - WARNING - Could not set database to SNOWBITS_DEMO_DB: 003001 (42501): 01bafcc9-0004-bdac-0000-3cf70022865a: SQL access control error:
+Insufficient privileges to operate on database 'SNOWBITS_DEMO_DB'
+2025-03-13 15:25:09,749 - snowflake_mcp_server - WARNING - Could not set schema to PUBLIC: 002043 (02000): 01bafcc9-0004-c09d-0000-3cf70022b0ce: SQL compilation error:
+Object does not exist, or operation cannot be performed.
+2025-03-13 15:25:10,689 - snowflake_mcp_server - INFO - Connected to Snowflake using role APP_BUILDER_ROLE
+2025-03-13 15:25:11,070 - snowflake.connector.connection - INFO - closed
+2025-03-13 15:25:11,180 - snowflake.connector.connection - INFO - No async queries seem to be running, deleting session
+2025-03-13 16:05:44,582 - snowflake_mcp_server - INFO - Loaded environment variables from .env file
+2025-03-13 16:05:44,582 - snowflake_mcp_server - INFO - FastMCP imported successfully
+2025-03-13 16:05:53,098 - mcp.server.lowlevel.server - INFO - Processing request of type ListToolsRequest
+2025-03-13 16:06:12,553 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-03-13 16:06:12,556 - snowflake_mcp_server - INFO - Listing all columns
+2025-03-13 16:06:12,575 - snowflake.connector.connection - INFO - Snowflake Connector for Python Version: 3.14.0, Python Version: 3.13.2, Platform: macOS-15.3.1-arm64-arm-64bit-Mach-O
+2025-03-13 16:06:12,577 - snowflake.connector.connection - INFO - Connecting to GLOBAL Snowflake domain
+2025-03-13 16:06:12,577 - snowflake.connector.connection - INFO - This connection is in OCSP Fail Open Mode. TLS Certificates would be checked for validity and revocation status. Any other Certificate Revocation related exceptions or OCSP Responder failures would be disregarded in favor of connectivity.
+2025-03-13 16:06:13,935 - snowflake_mcp_server - INFO - Successfully set role to APP_BUILDER_ROLE
+2025-03-13 16:06:14,278 - snowflake_mcp_server - WARNING - Insufficient privileges to use warehouse COMPUTE_WH. Some operations may fail.
+2025-03-13 16:06:14,278 - snowflake_mcp_server - WARNING - Consider using a different role or warehouse with appropriate permissions.
+2025-03-13 16:06:14,950 - snowflake_mcp_server - INFO - Found alternative warehouse: APP_BUILDER_WH
+2025-03-13 16:06:15,129 - snowflake_mcp_server - WARNING - Could not set database to SNOWBITS_DEMO_DB: 003001 (42501): 01bafcf2-0004-c09d-0000-3cf70022b0e6: SQL access control error:
+Insufficient privileges to operate on database 'SNOWBITS_DEMO_DB'
+2025-03-13 16:06:15,318 - snowflake_mcp_server - WARNING - Could not set schema to PUBLIC: 002043 (02000): 01bafcf2-0004-bdac-0000-3cf700228672: SQL compilation error:
+Object does not exist, or operation cannot be performed.
+2025-03-13 16:06:16,107 - snowflake_mcp_server - INFO - Connected to Snowflake using role APP_BUILDER_ROLE
+2025-03-13 16:11:30,980 - snowflake_mcp_server - INFO - Loaded environment variables from .env file
+2025-03-13 16:11:30,980 - snowflake_mcp_server - INFO - FastMCP imported successfully
+2025-03-14 08:06:26,406 - snowflake_mcp_server - INFO - Loaded environment variables from .env file
+2025-03-14 08:06:26,406 - snowflake_mcp_server - INFO - FastMCP imported successfully
+2025-03-14 08:56:26,946 - FastMCP.cli - ERROR - Failed to run server: unhandled errors in a TaskGroup (1 sub-exception)
+2025-03-14 08:56:31,317 - snowflake_mcp_server - INFO - Loaded environment variables from .env file
+2025-03-14 08:56:31,318 - snowflake_mcp_server - INFO - FastMCP imported successfully
+2025-03-14 09:00:11,772 - snowflake_mcp_server - INFO - Loaded environment variables from .env file
+2025-03-14 09:00:11,772 - snowflake_mcp_server - INFO - FastMCP imported successfully
+2025-03-14 09:00:19,140 - snowflake_mcp_server - INFO - Loaded environment variables from .env file
+2025-03-14 09:00:19,140 - snowflake_mcp_server - INFO - FastMCP imported successfully
+2025-03-14 09:00:46,940 - mcp.server.lowlevel.server - INFO - Processing request of type ListToolsRequest
+2025-03-14 09:00:52,041 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2025-03-14 09:00:52,042 - snowflake_mcp_server - INFO - Getting server info
+2025-03-14 09:00:52,064 - snowflake.connector.connection - INFO - Snowflake Connector for Python Version: 3.14.0, Python Version: 3.13.2, Platform: macOS-15.3.1-arm64-arm-64bit-Mach-O
+2025-03-14 09:00:52,067 - snowflake.connector.connection - INFO - Connecting to GLOBAL Snowflake domain
+2025-03-14 09:00:52,068 - snowflake.connector.connection - INFO - This connection is in OCSP Fail Open Mode. TLS Certificates would be checked for validity and revocation status. Any other Certificate Revocation related exceptions or OCSP Responder failures would be disregarded in favor of connectivity.
+2025-03-14 09:00:53,864 - snowflake_mcp_server - INFO - Successfully set role to APP_BUILDER_ROLE
+2025-03-14 09:00:54,320 - snowflake_mcp_server - WARNING - Insufficient privileges to use warehouse COMPUTE_WH. Some operations may fail.
+2025-03-14 09:00:54,320 - snowflake_mcp_server - WARNING - Consider using a different role or warehouse with appropriate permissions.
+2025-03-14 09:00:55,072 - snowflake_mcp_server - INFO - Found alternative warehouse: APP_BUILDER_WH
+2025-03-14 09:00:55,450 - snowflake_mcp_server - WARNING - Could not set database to SNOWBITS_DEMO_DB: 003001 (42501): 01bb00e8-0004-bdac-0000-3cf700228686: SQL access control error:
+Insufficient privileges to operate on database 'SNOWBITS_DEMO_DB'
+2025-03-14 09:00:55,884 - snowflake_mcp_server - WARNING - Could not set schema to PUBLIC: 002043 (02000): 01bb00e8-0004-c00c-0000-3cf70022c012: SQL compilation error:
+Object does not exist, or operation cannot be performed.
+2025-03-14 09:00:56,672 - snowflake_mcp_server - INFO - Connected to Snowflake using role APP_BUILDER_ROLE

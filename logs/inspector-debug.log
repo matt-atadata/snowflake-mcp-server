@@ -1,7 +1,0 @@
-[2025-03-12T02:13:03.654Z] Starting server in inspector mode
-{"timestamp":"2025-03-12T02:13:03.655Z","level":"info","message":"Starting server in inspector mode"}
-{"timestamp":"2025-03-12T02:13:03.655Z","level":"info","message":"Using private key authentication"}
-{"timestamp":"2025-03-12T02:13:03.671Z","level":"info","message":"Connecting to Snowflake..."}
-{"timestamp":"2025-03-12T02:13:04.172Z","level":"info","message":"Successfully connected to Snowflake"}
-{"timestamp":"2025-03-12T02:13:04.172Z","level":"error","message":"Failed to start Snowflake MCP Server:","error":{}}
-[2025-03-12T02:13:04.172Z] [ERROR] Failed to start Snowflake MCP Server: {}

@@ -1,0 +1,2005 @@
+
+@server.tool("show_alerts")
+def show_alerts() -> List[Dict[str, Any]]:
+    """
+    List all alerts in Snowflake.
+    
+    Returns:
+        List of alerts with their details
+    """
+    logger.info(f"Listing all alerts")
+    
+    if not SNOWFLAKE_AVAILABLE:
+        raise ImportError("Snowflake connector is not installed. Cannot list alerts.")
+    
+    conn = get_snowflake_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute("SHOW ALERTS")
+        results = cursor.fetchall()
+        
+        # Convert to list of dictionaries with column names
+        columns = [col[0] for col in cursor.description]
+        return format_output([dict(zip(columns, row)) for row in results])
+    except Exception as e:
+        logger.error(f"Error listing alerts: {e}")
+        raise
+    finally:
+        return_connection_to_pool(conn)
+
+
+
+@server.tool("show_application_roles")
+def show_application_roles() -> List[Dict[str, Any]]:
+    """
+    List all application_roles in Snowflake.
+    
+    Returns:
+        List of application_roles with their details
+    """
+    logger.info(f"Listing all application_roles")
+    
+    if not SNOWFLAKE_AVAILABLE:
+        raise ImportError("Snowflake connector is not installed. Cannot list application_roles.")
+    
+    conn = get_snowflake_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute("SHOW APPLICATION_ROLES")
+        results = cursor.fetchall()
+        
+        # Convert to list of dictionaries with column names
+        columns = [col[0] for col in cursor.description]
+        return format_output([dict(zip(columns, row)) for row in results])
+    except Exception as e:
+        logger.error(f"Error listing application_roles: {e}")
+        raise
+    finally:
+        return_connection_to_pool(conn)
+
+
+
+@server.tool("show_applications")
+def show_applications() -> List[Dict[str, Any]]:
+    """
+    List all applications in Snowflake.
+    
+    Returns:
+        List of applications with their details
+    """
+    logger.info(f"Listing all applications")
+    
+    if not SNOWFLAKE_AVAILABLE:
+        raise ImportError("Snowflake connector is not installed. Cannot list applications.")
+    
+    conn = get_snowflake_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute("SHOW APPLICATIONS")
+        results = cursor.fetchall()
+        
+        # Convert to list of dictionaries with column names
+        columns = [col[0] for col in cursor.description]
+        return format_output([dict(zip(columns, row)) for row in results])
+    except Exception as e:
+        logger.error(f"Error listing applications: {e}")
+        raise
+    finally:
+        return_connection_to_pool(conn)
+
+
+
+@server.tool("show_columns")
+def show_columns() -> List[Dict[str, Any]]:
+    """
+    List all columns in Snowflake.
+    
+    Returns:
+        List of columns with their details
+    """
+    logger.info(f"Listing all columns")
+    
+    if not SNOWFLAKE_AVAILABLE:
+        raise ImportError("Snowflake connector is not installed. Cannot list columns.")
+    
+    conn = get_snowflake_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute("SHOW COLUMNS")
+        results = cursor.fetchall()
+        
+        # Convert to list of dictionaries with column names
+        columns = [col[0] for col in cursor.description]
+        return format_output([dict(zip(columns, row)) for row in results])
+    except Exception as e:
+        logger.error(f"Error listing columns: {e}")
+        raise
+    finally:
+        return_connection_to_pool(conn)
+
+
+
+@server.tool("show_connections")
+def show_connections() -> List[Dict[str, Any]]:
+    """
+    List all connections in Snowflake.
+    
+    Returns:
+        List of connections with their details
+    """
+    logger.info(f"Listing all connections")
+    
+    if not SNOWFLAKE_AVAILABLE:
+        raise ImportError("Snowflake connector is not installed. Cannot list connections.")
+    
+    conn = get_snowflake_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute("SHOW CONNECTIONS")
+        results = cursor.fetchall()
+        
+        # Convert to list of dictionaries with column names
+        columns = [col[0] for col in cursor.description]
+        return format_output([dict(zip(columns, row)) for row in results])
+    except Exception as e:
+        logger.error(f"Error listing connections: {e}")
+        raise
+    finally:
+        return_connection_to_pool(conn)
+
+
+
+@server.tool("show_databases")
+def show_databases() -> List[Dict[str, Any]]:
+    """
+    List all databases in Snowflake.
+    
+    Returns:
+        List of databases with their details
+    """
+    logger.info(f"Listing all databases")
+    
+    if not SNOWFLAKE_AVAILABLE:
+        raise ImportError("Snowflake connector is not installed. Cannot list databases.")
+    
+    conn = get_snowflake_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute("SHOW DATABASES")
+        results = cursor.fetchall()
+        
+        # Convert to list of dictionaries with column names
+        columns = [col[0] for col in cursor.description]
+        return format_output([dict(zip(columns, row)) for row in results])
+    except Exception as e:
+        logger.error(f"Error listing databases: {e}")
+        raise
+    finally:
+        return_connection_to_pool(conn)
+
+
+
+@server.tool("show_external_functions")
+def show_external_functions() -> List[Dict[str, Any]]:
+    """
+    List all external_functions in Snowflake.
+    
+    Returns:
+        List of external_functions with their details
+    """
+    logger.info(f"Listing all external_functions")
+    
+    if not SNOWFLAKE_AVAILABLE:
+        raise ImportError("Snowflake connector is not installed. Cannot list external_functions.")
+    
+    conn = get_snowflake_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute("SHOW EXTERNAL_FUNCTIONS")
+        results = cursor.fetchall()
+        
+        # Convert to list of dictionaries with column names
+        columns = [col[0] for col in cursor.description]
+        return format_output([dict(zip(columns, row)) for row in results])
+    except Exception as e:
+        logger.error(f"Error listing external_functions: {e}")
+        raise
+    finally:
+        return_connection_to_pool(conn)
+
+
+
+@server.tool("show_external_tables")
+def show_external_tables() -> List[Dict[str, Any]]:
+    """
+    List all external_tables in Snowflake.
+    
+    Returns:
+        List of external_tables with their details
+    """
+    logger.info(f"Listing all external_tables")
+    
+    if not SNOWFLAKE_AVAILABLE:
+        raise ImportError("Snowflake connector is not installed. Cannot list external_tables.")
+    
+    conn = get_snowflake_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute("SHOW EXTERNAL_TABLES")
+        results = cursor.fetchall()
+        
+        # Convert to list of dictionaries with column names
+        columns = [col[0] for col in cursor.description]
+        return format_output([dict(zip(columns, row)) for row in results])
+    except Exception as e:
+        logger.error(f"Error listing external_tables: {e}")
+        raise
+    finally:
+        return_connection_to_pool(conn)
+
+
+
+@server.tool("show_functions")
+def show_functions() -> List[Dict[str, Any]]:
+    """
+    List all functions in Snowflake.
+    
+    Returns:
+        List of functions with their details
+    """
+    logger.info(f"Listing all functions")
+    
+    if not SNOWFLAKE_AVAILABLE:
+        raise ImportError("Snowflake connector is not installed. Cannot list functions.")
+    
+    conn = get_snowflake_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute("SHOW FUNCTIONS")
+        results = cursor.fetchall()
+        
+        # Convert to list of dictionaries with column names
+        columns = [col[0] for col in cursor.description]
+        return format_output([dict(zip(columns, row)) for row in results])
+    except Exception as e:
+        logger.error(f"Error listing functions: {e}")
+        raise
+    finally:
+        return_connection_to_pool(conn)
+
+
+
+@server.tool("show_grants")
+def show_grants() -> List[Dict[str, Any]]:
+    """
+    List all grants in Snowflake.
+    
+    Returns:
+        List of grants with their details
+    """
+    logger.info(f"Listing all grants")
+    
+    if not SNOWFLAKE_AVAILABLE:
+        raise ImportError("Snowflake connector is not installed. Cannot list grants.")
+    
+    conn = get_snowflake_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute("SHOW GRANTS")
+        results = cursor.fetchall()
+        
+        # Convert to list of dictionaries with column names
+        columns = [col[0] for col in cursor.description]
+        return format_output([dict(zip(columns, row)) for row in results])
+    except Exception as e:
+        logger.error(f"Error listing grants: {e}")
+        raise
+    finally:
+        return_connection_to_pool(conn)
+
+
+
+@server.tool("show_integrations")
+def show_integrations() -> List[Dict[str, Any]]:
+    """
+    List all integrations in Snowflake.
+    
+    Returns:
+        List of integrations with their details
+    """
+    logger.info(f"Listing all integrations")
+    
+    if not SNOWFLAKE_AVAILABLE:
+        raise ImportError("Snowflake connector is not installed. Cannot list integrations.")
+    
+    conn = get_snowflake_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute("SHOW INTEGRATIONS")
+        results = cursor.fetchall()
+        
+        # Convert to list of dictionaries with column names
+        columns = [col[0] for col in cursor.description]
+        return format_output([dict(zip(columns, row)) for row in results])
+    except Exception as e:
+        logger.error(f"Error listing integrations: {e}")
+        raise
+    finally:
+        return_connection_to_pool(conn)
+
+
+
+@server.tool("show_locks")
+def show_locks() -> List[Dict[str, Any]]:
+    """
+    List all locks in Snowflake.
+    
+    Returns:
+        List of locks with their details
+    """
+    logger.info(f"Listing all locks")
+    
+    if not SNOWFLAKE_AVAILABLE:
+        raise ImportError("Snowflake connector is not installed. Cannot list locks.")
+    
+    conn = get_snowflake_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute("SHOW LOCKS")
+        results = cursor.fetchall()
+        
+        # Convert to list of dictionaries with column names
+        columns = [col[0] for col in cursor.description]
+        return format_output([dict(zip(columns, row)) for row in results])
+    except Exception as e:
+        logger.error(f"Error listing locks: {e}")
+        raise
+    finally:
+        return_connection_to_pool(conn)
+
+
+
+@server.tool("show_managed_accounts")
+def show_managed_accounts() -> List[Dict[str, Any]]:
+    """
+    List all managed_accounts in Snowflake.
+    
+    Returns:
+        List of managed_accounts with their details
+    """
+    logger.info(f"Listing all managed_accounts")
+    
+    if not SNOWFLAKE_AVAILABLE:
+        raise ImportError("Snowflake connector is not installed. Cannot list managed_accounts.")
+    
+    conn = get_snowflake_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute("SHOW MANAGED_ACCOUNTS")
+        results = cursor.fetchall()
+        
+        # Convert to list of dictionaries with column names
+        columns = [col[0] for col in cursor.description]
+        return format_output([dict(zip(columns, row)) for row in results])
+    except Exception as e:
+        logger.error(f"Error listing managed_accounts: {e}")
+        raise
+    finally:
+        return_connection_to_pool(conn)
+
+
+
+@server.tool("show_materialized_views")
+def show_materialized_views() -> List[Dict[str, Any]]:
+    """
+    List all materialized_views in Snowflake.
+    
+    Returns:
+        List of materialized_views with their details
+    """
+    logger.info(f"Listing all materialized_views")
+    
+    if not SNOWFLAKE_AVAILABLE:
+        raise ImportError("Snowflake connector is not installed. Cannot list materialized_views.")
+    
+    conn = get_snowflake_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute("SHOW MATERIALIZED_VIEWS")
+        results = cursor.fetchall()
+        
+        # Convert to list of dictionaries with column names
+        columns = [col[0] for col in cursor.description]
+        return format_output([dict(zip(columns, row)) for row in results])
+    except Exception as e:
+        logger.error(f"Error listing materialized_views: {e}")
+        raise
+    finally:
+        return_connection_to_pool(conn)
+
+
+
+@server.tool("show_network_policies")
+def show_network_policies() -> List[Dict[str, Any]]:
+    """
+    List all network_policies in Snowflake.
+    
+    Returns:
+        List of network_policies with their details
+    """
+    logger.info(f"Listing all network_policies")
+    
+    if not SNOWFLAKE_AVAILABLE:
+        raise ImportError("Snowflake connector is not installed. Cannot list network_policies.")
+    
+    conn = get_snowflake_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute("SHOW NETWORK_POLICIES")
+        results = cursor.fetchall()
+        
+        # Convert to list of dictionaries with column names
+        columns = [col[0] for col in cursor.description]
+        return format_output([dict(zip(columns, row)) for row in results])
+    except Exception as e:
+        logger.error(f"Error listing network_policies: {e}")
+        raise
+    finally:
+        return_connection_to_pool(conn)
+
+
+
+@server.tool("show_objects")
+def show_objects() -> List[Dict[str, Any]]:
+    """
+    List all objects in Snowflake.
+    
+    Returns:
+        List of objects with their details
+    """
+    logger.info(f"Listing all objects")
+    
+    if not SNOWFLAKE_AVAILABLE:
+        raise ImportError("Snowflake connector is not installed. Cannot list objects.")
+    
+    conn = get_snowflake_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute("SHOW OBJECTS")
+        results = cursor.fetchall()
+        
+        # Convert to list of dictionaries with column names
+        columns = [col[0] for col in cursor.description]
+        return format_output([dict(zip(columns, row)) for row in results])
+    except Exception as e:
+        logger.error(f"Error listing objects: {e}")
+        raise
+    finally:
+        return_connection_to_pool(conn)
+
+
+
+@server.tool("show_parameters")
+def show_parameters() -> List[Dict[str, Any]]:
+    """
+    List all parameters in Snowflake.
+    
+    Returns:
+        List of parameters with their details
+    """
+    logger.info(f"Listing all parameters")
+    
+    if not SNOWFLAKE_AVAILABLE:
+        raise ImportError("Snowflake connector is not installed. Cannot list parameters.")
+    
+    conn = get_snowflake_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute("SHOW PARAMETERS")
+        results = cursor.fetchall()
+        
+        # Convert to list of dictionaries with column names
+        columns = [col[0] for col in cursor.description]
+        return format_output([dict(zip(columns, row)) for row in results])
+    except Exception as e:
+        logger.error(f"Error listing parameters: {e}")
+        raise
+    finally:
+        return_connection_to_pool(conn)
+
+
+
+@server.tool("show_pipes")
+def show_pipes() -> List[Dict[str, Any]]:
+    """
+    List all pipes in Snowflake.
+    
+    Returns:
+        List of pipes with their details
+    """
+    logger.info(f"Listing all pipes")
+    
+    if not SNOWFLAKE_AVAILABLE:
+        raise ImportError("Snowflake connector is not installed. Cannot list pipes.")
+    
+    conn = get_snowflake_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute("SHOW PIPES")
+        results = cursor.fetchall()
+        
+        # Convert to list of dictionaries with column names
+        columns = [col[0] for col in cursor.description]
+        return format_output([dict(zip(columns, row)) for row in results])
+    except Exception as e:
+        logger.error(f"Error listing pipes: {e}")
+        raise
+    finally:
+        return_connection_to_pool(conn)
+
+
+
+@server.tool("show_procedures")
+def show_procedures() -> List[Dict[str, Any]]:
+    """
+    List all procedures in Snowflake.
+    
+    Returns:
+        List of procedures with their details
+    """
+    logger.info(f"Listing all procedures")
+    
+    if not SNOWFLAKE_AVAILABLE:
+        raise ImportError("Snowflake connector is not installed. Cannot list procedures.")
+    
+    conn = get_snowflake_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute("SHOW PROCEDURES")
+        results = cursor.fetchall()
+        
+        # Convert to list of dictionaries with column names
+        columns = [col[0] for col in cursor.description]
+        return format_output([dict(zip(columns, row)) for row in results])
+    except Exception as e:
+        logger.error(f"Error listing procedures: {e}")
+        raise
+    finally:
+        return_connection_to_pool(conn)
+
+
+
+@server.tool("show_regions")
+def show_regions() -> List[Dict[str, Any]]:
+    """
+    List all regions in Snowflake.
+    
+    Returns:
+        List of regions with their details
+    """
+    logger.info(f"Listing all regions")
+    
+    if not SNOWFLAKE_AVAILABLE:
+        raise ImportError("Snowflake connector is not installed. Cannot list regions.")
+    
+    conn = get_snowflake_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute("SHOW REGIONS")
+        results = cursor.fetchall()
+        
+        # Convert to list of dictionaries with column names
+        columns = [col[0] for col in cursor.description]
+        return format_output([dict(zip(columns, row)) for row in results])
+    except Exception as e:
+        logger.error(f"Error listing regions: {e}")
+        raise
+    finally:
+        return_connection_to_pool(conn)
+
+
+
+@server.tool("show_replication_databases")
+def show_replication_databases() -> List[Dict[str, Any]]:
+    """
+    List all replication_databases in Snowflake.
+    
+    Returns:
+        List of replication_databases with their details
+    """
+    logger.info(f"Listing all replication_databases")
+    
+    if not SNOWFLAKE_AVAILABLE:
+        raise ImportError("Snowflake connector is not installed. Cannot list replication_databases.")
+    
+    conn = get_snowflake_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute("SHOW REPLICATION_DATABASES")
+        results = cursor.fetchall()
+        
+        # Convert to list of dictionaries with column names
+        columns = [col[0] for col in cursor.description]
+        return format_output([dict(zip(columns, row)) for row in results])
+    except Exception as e:
+        logger.error(f"Error listing replication_databases: {e}")
+        raise
+    finally:
+        return_connection_to_pool(conn)
+
+
+
+@server.tool("show_replication_groups")
+def show_replication_groups() -> List[Dict[str, Any]]:
+    """
+    List all replication_groups in Snowflake.
+    
+    Returns:
+        List of replication_groups with their details
+    """
+    logger.info(f"Listing all replication_groups")
+    
+    if not SNOWFLAKE_AVAILABLE:
+        raise ImportError("Snowflake connector is not installed. Cannot list replication_groups.")
+    
+    conn = get_snowflake_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute("SHOW REPLICATION_GROUPS")
+        results = cursor.fetchall()
+        
+        # Convert to list of dictionaries with column names
+        columns = [col[0] for col in cursor.description]
+        return format_output([dict(zip(columns, row)) for row in results])
+    except Exception as e:
+        logger.error(f"Error listing replication_groups: {e}")
+        raise
+    finally:
+        return_connection_to_pool(conn)
+
+
+
+@server.tool("show_roles")
+def show_roles() -> List[Dict[str, Any]]:
+    """
+    List all roles in Snowflake.
+    
+    Returns:
+        List of roles with their details
+    """
+    logger.info(f"Listing all roles")
+    
+    if not SNOWFLAKE_AVAILABLE:
+        raise ImportError("Snowflake connector is not installed. Cannot list roles.")
+    
+    conn = get_snowflake_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute("SHOW ROLES")
+        results = cursor.fetchall()
+        
+        # Convert to list of dictionaries with column names
+        columns = [col[0] for col in cursor.description]
+        return format_output([dict(zip(columns, row)) for row in results])
+    except Exception as e:
+        logger.error(f"Error listing roles: {e}")
+        raise
+    finally:
+        return_connection_to_pool(conn)
+
+
+
+@server.tool("show_schemas")
+def show_schemas() -> List[Dict[str, Any]]:
+    """
+    List all schemas in Snowflake.
+    
+    Returns:
+        List of schemas with their details
+    """
+    logger.info(f"Listing all schemas")
+    
+    if not SNOWFLAKE_AVAILABLE:
+        raise ImportError("Snowflake connector is not installed. Cannot list schemas.")
+    
+    conn = get_snowflake_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute("SHOW SCHEMAS")
+        results = cursor.fetchall()
+        
+        # Convert to list of dictionaries with column names
+        columns = [col[0] for col in cursor.description]
+        return format_output([dict(zip(columns, row)) for row in results])
+    except Exception as e:
+        logger.error(f"Error listing schemas: {e}")
+        raise
+    finally:
+        return_connection_to_pool(conn)
+
+
+
+@server.tool("show_sequences")
+def show_sequences() -> List[Dict[str, Any]]:
+    """
+    List all sequences in Snowflake.
+    
+    Returns:
+        List of sequences with their details
+    """
+    logger.info(f"Listing all sequences")
+    
+    if not SNOWFLAKE_AVAILABLE:
+        raise ImportError("Snowflake connector is not installed. Cannot list sequences.")
+    
+    conn = get_snowflake_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute("SHOW SEQUENCES")
+        results = cursor.fetchall()
+        
+        # Convert to list of dictionaries with column names
+        columns = [col[0] for col in cursor.description]
+        return format_output([dict(zip(columns, row)) for row in results])
+    except Exception as e:
+        logger.error(f"Error listing sequences: {e}")
+        raise
+    finally:
+        return_connection_to_pool(conn)
+
+
+
+@server.tool("show_services")
+def show_services() -> List[Dict[str, Any]]:
+    """
+    List all services in Snowflake.
+    
+    Returns:
+        List of services with their details
+    """
+    logger.info(f"Listing all services")
+    
+    if not SNOWFLAKE_AVAILABLE:
+        raise ImportError("Snowflake connector is not installed. Cannot list services.")
+    
+    conn = get_snowflake_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute("SHOW SERVICES")
+        results = cursor.fetchall()
+        
+        # Convert to list of dictionaries with column names
+        columns = [col[0] for col in cursor.description]
+        return format_output([dict(zip(columns, row)) for row in results])
+    except Exception as e:
+        logger.error(f"Error listing services: {e}")
+        raise
+    finally:
+        return_connection_to_pool(conn)
+
+
+
+@server.tool("show_shares")
+def show_shares() -> List[Dict[str, Any]]:
+    """
+    List all shares in Snowflake.
+    
+    Returns:
+        List of shares with their details
+    """
+    logger.info(f"Listing all shares")
+    
+    if not SNOWFLAKE_AVAILABLE:
+        raise ImportError("Snowflake connector is not installed. Cannot list shares.")
+    
+    conn = get_snowflake_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute("SHOW SHARES")
+        results = cursor.fetchall()
+        
+        # Convert to list of dictionaries with column names
+        columns = [col[0] for col in cursor.description]
+        return format_output([dict(zip(columns, row)) for row in results])
+    except Exception as e:
+        logger.error(f"Error listing shares: {e}")
+        raise
+    finally:
+        return_connection_to_pool(conn)
+
+
+
+@server.tool("show_stages")
+def show_stages() -> List[Dict[str, Any]]:
+    """
+    List all stages in Snowflake.
+    
+    Returns:
+        List of stages with their details
+    """
+    logger.info(f"Listing all stages")
+    
+    if not SNOWFLAKE_AVAILABLE:
+        raise ImportError("Snowflake connector is not installed. Cannot list stages.")
+    
+    conn = get_snowflake_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute("SHOW STAGES")
+        results = cursor.fetchall()
+        
+        # Convert to list of dictionaries with column names
+        columns = [col[0] for col in cursor.description]
+        return format_output([dict(zip(columns, row)) for row in results])
+    except Exception as e:
+        logger.error(f"Error listing stages: {e}")
+        raise
+    finally:
+        return_connection_to_pool(conn)
+
+
+
+@server.tool("show_streams")
+def show_streams() -> List[Dict[str, Any]]:
+    """
+    List all streams in Snowflake.
+    
+    Returns:
+        List of streams with their details
+    """
+    logger.info(f"Listing all streams")
+    
+    if not SNOWFLAKE_AVAILABLE:
+        raise ImportError("Snowflake connector is not installed. Cannot list streams.")
+    
+    conn = get_snowflake_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute("SHOW STREAMS")
+        results = cursor.fetchall()
+        
+        # Convert to list of dictionaries with column names
+        columns = [col[0] for col in cursor.description]
+        return format_output([dict(zip(columns, row)) for row in results])
+    except Exception as e:
+        logger.error(f"Error listing streams: {e}")
+        raise
+    finally:
+        return_connection_to_pool(conn)
+
+
+
+@server.tool("show_tables")
+def show_tables() -> List[Dict[str, Any]]:
+    """
+    List all tables in Snowflake.
+    
+    Returns:
+        List of tables with their details
+    """
+    logger.info(f"Listing all tables")
+    
+    if not SNOWFLAKE_AVAILABLE:
+        raise ImportError("Snowflake connector is not installed. Cannot list tables.")
+    
+    conn = get_snowflake_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute("SHOW TABLES")
+        results = cursor.fetchall()
+        
+        # Convert to list of dictionaries with column names
+        columns = [col[0] for col in cursor.description]
+        return format_output([dict(zip(columns, row)) for row in results])
+    except Exception as e:
+        logger.error(f"Error listing tables: {e}")
+        raise
+    finally:
+        return_connection_to_pool(conn)
+
+
+
+@server.tool("show_tasks")
+def show_tasks() -> List[Dict[str, Any]]:
+    """
+    List all tasks in Snowflake.
+    
+    Returns:
+        List of tasks with their details
+    """
+    logger.info(f"Listing all tasks")
+    
+    if not SNOWFLAKE_AVAILABLE:
+        raise ImportError("Snowflake connector is not installed. Cannot list tasks.")
+    
+    conn = get_snowflake_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute("SHOW TASKS")
+        results = cursor.fetchall()
+        
+        # Convert to list of dictionaries with column names
+        columns = [col[0] for col in cursor.description]
+        return format_output([dict(zip(columns, row)) for row in results])
+    except Exception as e:
+        logger.error(f"Error listing tasks: {e}")
+        raise
+    finally:
+        return_connection_to_pool(conn)
+
+
+
+@server.tool("show_transactions")
+def show_transactions() -> List[Dict[str, Any]]:
+    """
+    List all transactions in Snowflake.
+    
+    Returns:
+        List of transactions with their details
+    """
+    logger.info(f"Listing all transactions")
+    
+    if not SNOWFLAKE_AVAILABLE:
+        raise ImportError("Snowflake connector is not installed. Cannot list transactions.")
+    
+    conn = get_snowflake_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute("SHOW TRANSACTIONS")
+        results = cursor.fetchall()
+        
+        # Convert to list of dictionaries with column names
+        columns = [col[0] for col in cursor.description]
+        return format_output([dict(zip(columns, row)) for row in results])
+    except Exception as e:
+        logger.error(f"Error listing transactions: {e}")
+        raise
+    finally:
+        return_connection_to_pool(conn)
+
+
+
+@server.tool("show_users")
+def show_users() -> List[Dict[str, Any]]:
+    """
+    List all users in Snowflake.
+    
+    Returns:
+        List of users with their details
+    """
+    logger.info(f"Listing all users")
+    
+    if not SNOWFLAKE_AVAILABLE:
+        raise ImportError("Snowflake connector is not installed. Cannot list users.")
+    
+    conn = get_snowflake_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute("SHOW USERS")
+        results = cursor.fetchall()
+        
+        # Convert to list of dictionaries with column names
+        columns = [col[0] for col in cursor.description]
+        return format_output([dict(zip(columns, row)) for row in results])
+    except Exception as e:
+        logger.error(f"Error listing users: {e}")
+        raise
+    finally:
+        return_connection_to_pool(conn)
+
+
+
+@server.tool("show_views")
+def show_views() -> List[Dict[str, Any]]:
+    """
+    List all views in Snowflake.
+    
+    Returns:
+        List of views with their details
+    """
+    logger.info(f"Listing all views")
+    
+    if not SNOWFLAKE_AVAILABLE:
+        raise ImportError("Snowflake connector is not installed. Cannot list views.")
+    
+    conn = get_snowflake_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute("SHOW VIEWS")
+        results = cursor.fetchall()
+        
+        # Convert to list of dictionaries with column names
+        columns = [col[0] for col in cursor.description]
+        return format_output([dict(zip(columns, row)) for row in results])
+    except Exception as e:
+        logger.error(f"Error listing views: {e}")
+        raise
+    finally:
+        return_connection_to_pool(conn)
+
+
+
+@server.tool("show_warehouses")
+def show_warehouses() -> List[Dict[str, Any]]:
+    """
+    List all warehouses in Snowflake.
+    
+    Returns:
+        List of warehouses with their details
+    """
+    logger.info(f"Listing all warehouses")
+    
+    if not SNOWFLAKE_AVAILABLE:
+        raise ImportError("Snowflake connector is not installed. Cannot list warehouses.")
+    
+    conn = get_snowflake_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute("SHOW WAREHOUSES")
+        results = cursor.fetchall()
+        
+        # Convert to list of dictionaries with column names
+        columns = [col[0] for col in cursor.description]
+        return format_output([dict(zip(columns, row)) for row in results])
+    except Exception as e:
+        logger.error(f"Error listing warehouses: {e}")
+        raise
+    finally:
+        return_connection_to_pool(conn)
+
+
+
+@server.tool("describe_account")
+def describe_account(name: str) -> Dict[str, Any]:
+    """
+    Get details about a specific account.
+    
+    Args:
+        name: Name of the account to describe
+        
+    Returns:
+        Detailed information about the account
+    """
+    logger.info(f"Describing account: {name}")
+    
+    if not SNOWFLAKE_AVAILABLE:
+        raise ImportError("Snowflake connector is not installed. Cannot describe account.")
+    
+    conn = get_snowflake_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute(f"DESCRIBE ACCOUNT {name}")
+        results = cursor.fetchall()
+        
+        # Convert to dictionary with column names
+        columns = [col[0] for col in cursor.description]
+        return format_output(dict(zip(columns, results[0])))
+    except Exception as e:
+        logger.error(f"Error describing account {name}: {e}")
+        raise
+    finally:
+        return_connection_to_pool(conn)
+
+
+
+@server.tool("describe_alert")
+def describe_alert(name: str) -> Dict[str, Any]:
+    """
+    Get details about a specific alert.
+    
+    Args:
+        name: Name of the alert to describe
+        
+    Returns:
+        Detailed information about the alert
+    """
+    logger.info(f"Describing alert: {name}")
+    
+    if not SNOWFLAKE_AVAILABLE:
+        raise ImportError("Snowflake connector is not installed. Cannot describe alert.")
+    
+    conn = get_snowflake_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute(f"DESCRIBE ALERT {name}")
+        results = cursor.fetchall()
+        
+        # Convert to dictionary with column names
+        columns = [col[0] for col in cursor.description]
+        return format_output(dict(zip(columns, results[0])))
+    except Exception as e:
+        logger.error(f"Error describing alert {name}: {e}")
+        raise
+    finally:
+        return_connection_to_pool(conn)
+
+
+
+@server.tool("describe_application")
+def describe_application(name: str) -> Dict[str, Any]:
+    """
+    Get details about a specific application.
+    
+    Args:
+        name: Name of the application to describe
+        
+    Returns:
+        Detailed information about the application
+    """
+    logger.info(f"Describing application: {name}")
+    
+    if not SNOWFLAKE_AVAILABLE:
+        raise ImportError("Snowflake connector is not installed. Cannot describe application.")
+    
+    conn = get_snowflake_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute(f"DESCRIBE APPLICATION {name}")
+        results = cursor.fetchall()
+        
+        # Convert to dictionary with column names
+        columns = [col[0] for col in cursor.description]
+        return format_output(dict(zip(columns, results[0])))
+    except Exception as e:
+        logger.error(f"Error describing application {name}: {e}")
+        raise
+    finally:
+        return_connection_to_pool(conn)
+
+
+
+@server.tool("describe_application_role")
+def describe_application_role(name: str) -> Dict[str, Any]:
+    """
+    Get details about a specific application_role.
+    
+    Args:
+        name: Name of the application_role to describe
+        
+    Returns:
+        Detailed information about the application_role
+    """
+    logger.info(f"Describing application_role: {name}")
+    
+    if not SNOWFLAKE_AVAILABLE:
+        raise ImportError("Snowflake connector is not installed. Cannot describe application_role.")
+    
+    conn = get_snowflake_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute(f"DESCRIBE APPLICATION_ROLE {name}")
+        results = cursor.fetchall()
+        
+        # Convert to dictionary with column names
+        columns = [col[0] for col in cursor.description]
+        return format_output(dict(zip(columns, results[0])))
+    except Exception as e:
+        logger.error(f"Error describing application_role {name}: {e}")
+        raise
+    finally:
+        return_connection_to_pool(conn)
+
+
+
+@server.tool("describe_column")
+def describe_column(name: str) -> Dict[str, Any]:
+    """
+    Get details about a specific column.
+    
+    Args:
+        name: Name of the column to describe
+        
+    Returns:
+        Detailed information about the column
+    """
+    logger.info(f"Describing column: {name}")
+    
+    if not SNOWFLAKE_AVAILABLE:
+        raise ImportError("Snowflake connector is not installed. Cannot describe column.")
+    
+    conn = get_snowflake_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute(f"DESCRIBE COLUMN {name}")
+        results = cursor.fetchall()
+        
+        # Convert to dictionary with column names
+        columns = [col[0] for col in cursor.description]
+        return format_output(dict(zip(columns, results[0])))
+    except Exception as e:
+        logger.error(f"Error describing column {name}: {e}")
+        raise
+    finally:
+        return_connection_to_pool(conn)
+
+
+
+@server.tool("describe_connection")
+def describe_connection(name: str) -> Dict[str, Any]:
+    """
+    Get details about a specific connection.
+    
+    Args:
+        name: Name of the connection to describe
+        
+    Returns:
+        Detailed information about the connection
+    """
+    logger.info(f"Describing connection: {name}")
+    
+    if not SNOWFLAKE_AVAILABLE:
+        raise ImportError("Snowflake connector is not installed. Cannot describe connection.")
+    
+    conn = get_snowflake_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute(f"DESCRIBE CONNECTION {name}")
+        results = cursor.fetchall()
+        
+        # Convert to dictionary with column names
+        columns = [col[0] for col in cursor.description]
+        return format_output(dict(zip(columns, results[0])))
+    except Exception as e:
+        logger.error(f"Error describing connection {name}: {e}")
+        raise
+    finally:
+        return_connection_to_pool(conn)
+
+
+
+@server.tool("describe_database")
+def describe_database(name: str) -> Dict[str, Any]:
+    """
+    Get details about a specific database.
+    
+    Args:
+        name: Name of the database to describe
+        
+    Returns:
+        Detailed information about the database
+    """
+    logger.info(f"Describing database: {name}")
+    
+    if not SNOWFLAKE_AVAILABLE:
+        raise ImportError("Snowflake connector is not installed. Cannot describe database.")
+    
+    conn = get_snowflake_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute(f"DESCRIBE DATABASE {name}")
+        results = cursor.fetchall()
+        
+        # Convert to dictionary with column names
+        columns = [col[0] for col in cursor.description]
+        return format_output(dict(zip(columns, results[0])))
+    except Exception as e:
+        logger.error(f"Error describing database {name}: {e}")
+        raise
+    finally:
+        return_connection_to_pool(conn)
+
+
+
+@server.tool("describe_external_function")
+def describe_external_function(name: str) -> Dict[str, Any]:
+    """
+    Get details about a specific external_function.
+    
+    Args:
+        name: Name of the external_function to describe
+        
+    Returns:
+        Detailed information about the external_function
+    """
+    logger.info(f"Describing external_function: {name}")
+    
+    if not SNOWFLAKE_AVAILABLE:
+        raise ImportError("Snowflake connector is not installed. Cannot describe external_function.")
+    
+    conn = get_snowflake_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute(f"DESCRIBE EXTERNAL_FUNCTION {name}")
+        results = cursor.fetchall()
+        
+        # Convert to dictionary with column names
+        columns = [col[0] for col in cursor.description]
+        return format_output(dict(zip(columns, results[0])))
+    except Exception as e:
+        logger.error(f"Error describing external_function {name}: {e}")
+        raise
+    finally:
+        return_connection_to_pool(conn)
+
+
+
+@server.tool("describe_external_table")
+def describe_external_table(name: str) -> Dict[str, Any]:
+    """
+    Get details about a specific external_table.
+    
+    Args:
+        name: Name of the external_table to describe
+        
+    Returns:
+        Detailed information about the external_table
+    """
+    logger.info(f"Describing external_table: {name}")
+    
+    if not SNOWFLAKE_AVAILABLE:
+        raise ImportError("Snowflake connector is not installed. Cannot describe external_table.")
+    
+    conn = get_snowflake_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute(f"DESCRIBE EXTERNAL_TABLE {name}")
+        results = cursor.fetchall()
+        
+        # Convert to dictionary with column names
+        columns = [col[0] for col in cursor.description]
+        return format_output(dict(zip(columns, results[0])))
+    except Exception as e:
+        logger.error(f"Error describing external_table {name}: {e}")
+        raise
+    finally:
+        return_connection_to_pool(conn)
+
+
+
+@server.tool("describe_function")
+def describe_function(name: str) -> Dict[str, Any]:
+    """
+    Get details about a specific function.
+    
+    Args:
+        name: Name of the function to describe
+        
+    Returns:
+        Detailed information about the function
+    """
+    logger.info(f"Describing function: {name}")
+    
+    if not SNOWFLAKE_AVAILABLE:
+        raise ImportError("Snowflake connector is not installed. Cannot describe function.")
+    
+    conn = get_snowflake_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute(f"DESCRIBE FUNCTION {name}")
+        results = cursor.fetchall()
+        
+        # Convert to dictionary with column names
+        columns = [col[0] for col in cursor.description]
+        return format_output(dict(zip(columns, results[0])))
+    except Exception as e:
+        logger.error(f"Error describing function {name}: {e}")
+        raise
+    finally:
+        return_connection_to_pool(conn)
+
+
+
+@server.tool("describe_integration")
+def describe_integration(name: str) -> Dict[str, Any]:
+    """
+    Get details about a specific integration.
+    
+    Args:
+        name: Name of the integration to describe
+        
+    Returns:
+        Detailed information about the integration
+    """
+    logger.info(f"Describing integration: {name}")
+    
+    if not SNOWFLAKE_AVAILABLE:
+        raise ImportError("Snowflake connector is not installed. Cannot describe integration.")
+    
+    conn = get_snowflake_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute(f"DESCRIBE INTEGRATION {name}")
+        results = cursor.fetchall()
+        
+        # Convert to dictionary with column names
+        columns = [col[0] for col in cursor.description]
+        return format_output(dict(zip(columns, results[0])))
+    except Exception as e:
+        logger.error(f"Error describing integration {name}: {e}")
+        raise
+    finally:
+        return_connection_to_pool(conn)
+
+
+
+@server.tool("describe_materialized_view")
+def describe_materialized_view(name: str) -> Dict[str, Any]:
+    """
+    Get details about a specific materialized_view.
+    
+    Args:
+        name: Name of the materialized_view to describe
+        
+    Returns:
+        Detailed information about the materialized_view
+    """
+    logger.info(f"Describing materialized_view: {name}")
+    
+    if not SNOWFLAKE_AVAILABLE:
+        raise ImportError("Snowflake connector is not installed. Cannot describe materialized_view.")
+    
+    conn = get_snowflake_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute(f"DESCRIBE MATERIALIZED_VIEW {name}")
+        results = cursor.fetchall()
+        
+        # Convert to dictionary with column names
+        columns = [col[0] for col in cursor.description]
+        return format_output(dict(zip(columns, results[0])))
+    except Exception as e:
+        logger.error(f"Error describing materialized_view {name}: {e}")
+        raise
+    finally:
+        return_connection_to_pool(conn)
+
+
+
+@server.tool("describe_network_policy")
+def describe_network_policy(name: str) -> Dict[str, Any]:
+    """
+    Get details about a specific network_policy.
+    
+    Args:
+        name: Name of the network_policy to describe
+        
+    Returns:
+        Detailed information about the network_policy
+    """
+    logger.info(f"Describing network_policy: {name}")
+    
+    if not SNOWFLAKE_AVAILABLE:
+        raise ImportError("Snowflake connector is not installed. Cannot describe network_policy.")
+    
+    conn = get_snowflake_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute(f"DESCRIBE NETWORK_POLICY {name}")
+        results = cursor.fetchall()
+        
+        # Convert to dictionary with column names
+        columns = [col[0] for col in cursor.description]
+        return format_output(dict(zip(columns, results[0])))
+    except Exception as e:
+        logger.error(f"Error describing network_policy {name}: {e}")
+        raise
+    finally:
+        return_connection_to_pool(conn)
+
+
+
+@server.tool("describe_pipe")
+def describe_pipe(name: str) -> Dict[str, Any]:
+    """
+    Get details about a specific pipe.
+    
+    Args:
+        name: Name of the pipe to describe
+        
+    Returns:
+        Detailed information about the pipe
+    """
+    logger.info(f"Describing pipe: {name}")
+    
+    if not SNOWFLAKE_AVAILABLE:
+        raise ImportError("Snowflake connector is not installed. Cannot describe pipe.")
+    
+    conn = get_snowflake_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute(f"DESCRIBE PIPE {name}")
+        results = cursor.fetchall()
+        
+        # Convert to dictionary with column names
+        columns = [col[0] for col in cursor.description]
+        return format_output(dict(zip(columns, results[0])))
+    except Exception as e:
+        logger.error(f"Error describing pipe {name}: {e}")
+        raise
+    finally:
+        return_connection_to_pool(conn)
+
+
+
+@server.tool("describe_procedure")
+def describe_procedure(name: str) -> Dict[str, Any]:
+    """
+    Get details about a specific procedure.
+    
+    Args:
+        name: Name of the procedure to describe
+        
+    Returns:
+        Detailed information about the procedure
+    """
+    logger.info(f"Describing procedure: {name}")
+    
+    if not SNOWFLAKE_AVAILABLE:
+        raise ImportError("Snowflake connector is not installed. Cannot describe procedure.")
+    
+    conn = get_snowflake_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute(f"DESCRIBE PROCEDURE {name}")
+        results = cursor.fetchall()
+        
+        # Convert to dictionary with column names
+        columns = [col[0] for col in cursor.description]
+        return format_output(dict(zip(columns, results[0])))
+    except Exception as e:
+        logger.error(f"Error describing procedure {name}: {e}")
+        raise
+    finally:
+        return_connection_to_pool(conn)
+
+
+
+@server.tool("describe_replication_database")
+def describe_replication_database(name: str) -> Dict[str, Any]:
+    """
+    Get details about a specific replication_database.
+    
+    Args:
+        name: Name of the replication_database to describe
+        
+    Returns:
+        Detailed information about the replication_database
+    """
+    logger.info(f"Describing replication_database: {name}")
+    
+    if not SNOWFLAKE_AVAILABLE:
+        raise ImportError("Snowflake connector is not installed. Cannot describe replication_database.")
+    
+    conn = get_snowflake_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute(f"DESCRIBE REPLICATION_DATABASE {name}")
+        results = cursor.fetchall()
+        
+        # Convert to dictionary with column names
+        columns = [col[0] for col in cursor.description]
+        return format_output(dict(zip(columns, results[0])))
+    except Exception as e:
+        logger.error(f"Error describing replication_database {name}: {e}")
+        raise
+    finally:
+        return_connection_to_pool(conn)
+
+
+
+@server.tool("describe_replication_group")
+def describe_replication_group(name: str) -> Dict[str, Any]:
+    """
+    Get details about a specific replication_group.
+    
+    Args:
+        name: Name of the replication_group to describe
+        
+    Returns:
+        Detailed information about the replication_group
+    """
+    logger.info(f"Describing replication_group: {name}")
+    
+    if not SNOWFLAKE_AVAILABLE:
+        raise ImportError("Snowflake connector is not installed. Cannot describe replication_group.")
+    
+    conn = get_snowflake_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute(f"DESCRIBE REPLICATION_GROUP {name}")
+        results = cursor.fetchall()
+        
+        # Convert to dictionary with column names
+        columns = [col[0] for col in cursor.description]
+        return format_output(dict(zip(columns, results[0])))
+    except Exception as e:
+        logger.error(f"Error describing replication_group {name}: {e}")
+        raise
+    finally:
+        return_connection_to_pool(conn)
+
+
+
+@server.tool("describe_role")
+def describe_role(name: str) -> Dict[str, Any]:
+    """
+    Get details about a specific role.
+    
+    Args:
+        name: Name of the role to describe
+        
+    Returns:
+        Detailed information about the role
+    """
+    logger.info(f"Describing role: {name}")
+    
+    if not SNOWFLAKE_AVAILABLE:
+        raise ImportError("Snowflake connector is not installed. Cannot describe role.")
+    
+    conn = get_snowflake_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute(f"DESCRIBE ROLE {name}")
+        results = cursor.fetchall()
+        
+        # Convert to dictionary with column names
+        columns = [col[0] for col in cursor.description]
+        return format_output(dict(zip(columns, results[0])))
+    except Exception as e:
+        logger.error(f"Error describing role {name}: {e}")
+        raise
+    finally:
+        return_connection_to_pool(conn)
+
+
+
+@server.tool("describe_schema")
+def describe_schema(name: str) -> Dict[str, Any]:
+    """
+    Get details about a specific schema.
+    
+    Args:
+        name: Name of the schema to describe
+        
+    Returns:
+        Detailed information about the schema
+    """
+    logger.info(f"Describing schema: {name}")
+    
+    if not SNOWFLAKE_AVAILABLE:
+        raise ImportError("Snowflake connector is not installed. Cannot describe schema.")
+    
+    conn = get_snowflake_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute(f"DESCRIBE SCHEMA {name}")
+        results = cursor.fetchall()
+        
+        # Convert to dictionary with column names
+        columns = [col[0] for col in cursor.description]
+        return format_output(dict(zip(columns, results[0])))
+    except Exception as e:
+        logger.error(f"Error describing schema {name}: {e}")
+        raise
+    finally:
+        return_connection_to_pool(conn)
+
+
+
+@server.tool("describe_sequence")
+def describe_sequence(name: str) -> Dict[str, Any]:
+    """
+    Get details about a specific sequence.
+    
+    Args:
+        name: Name of the sequence to describe
+        
+    Returns:
+        Detailed information about the sequence
+    """
+    logger.info(f"Describing sequence: {name}")
+    
+    if not SNOWFLAKE_AVAILABLE:
+        raise ImportError("Snowflake connector is not installed. Cannot describe sequence.")
+    
+    conn = get_snowflake_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute(f"DESCRIBE SEQUENCE {name}")
+        results = cursor.fetchall()
+        
+        # Convert to dictionary with column names
+        columns = [col[0] for col in cursor.description]
+        return format_output(dict(zip(columns, results[0])))
+    except Exception as e:
+        logger.error(f"Error describing sequence {name}: {e}")
+        raise
+    finally:
+        return_connection_to_pool(conn)
+
+
+
+@server.tool("describe_service")
+def describe_service(name: str) -> Dict[str, Any]:
+    """
+    Get details about a specific service.
+    
+    Args:
+        name: Name of the service to describe
+        
+    Returns:
+        Detailed information about the service
+    """
+    logger.info(f"Describing service: {name}")
+    
+    if not SNOWFLAKE_AVAILABLE:
+        raise ImportError("Snowflake connector is not installed. Cannot describe service.")
+    
+    conn = get_snowflake_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute(f"DESCRIBE SERVICE {name}")
+        results = cursor.fetchall()
+        
+        # Convert to dictionary with column names
+        columns = [col[0] for col in cursor.description]
+        return format_output(dict(zip(columns, results[0])))
+    except Exception as e:
+        logger.error(f"Error describing service {name}: {e}")
+        raise
+    finally:
+        return_connection_to_pool(conn)
+
+
+
+@server.tool("describe_share")
+def describe_share(name: str) -> Dict[str, Any]:
+    """
+    Get details about a specific share.
+    
+    Args:
+        name: Name of the share to describe
+        
+    Returns:
+        Detailed information about the share
+    """
+    logger.info(f"Describing share: {name}")
+    
+    if not SNOWFLAKE_AVAILABLE:
+        raise ImportError("Snowflake connector is not installed. Cannot describe share.")
+    
+    conn = get_snowflake_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute(f"DESCRIBE SHARE {name}")
+        results = cursor.fetchall()
+        
+        # Convert to dictionary with column names
+        columns = [col[0] for col in cursor.description]
+        return format_output(dict(zip(columns, results[0])))
+    except Exception as e:
+        logger.error(f"Error describing share {name}: {e}")
+        raise
+    finally:
+        return_connection_to_pool(conn)
+
+
+
+@server.tool("describe_stage")
+def describe_stage(name: str) -> Dict[str, Any]:
+    """
+    Get details about a specific stage.
+    
+    Args:
+        name: Name of the stage to describe
+        
+    Returns:
+        Detailed information about the stage
+    """
+    logger.info(f"Describing stage: {name}")
+    
+    if not SNOWFLAKE_AVAILABLE:
+        raise ImportError("Snowflake connector is not installed. Cannot describe stage.")
+    
+    conn = get_snowflake_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute(f"DESCRIBE STAGE {name}")
+        results = cursor.fetchall()
+        
+        # Convert to dictionary with column names
+        columns = [col[0] for col in cursor.description]
+        return format_output(dict(zip(columns, results[0])))
+    except Exception as e:
+        logger.error(f"Error describing stage {name}: {e}")
+        raise
+    finally:
+        return_connection_to_pool(conn)
+
+
+
+@server.tool("describe_stream")
+def describe_stream(name: str) -> Dict[str, Any]:
+    """
+    Get details about a specific stream.
+    
+    Args:
+        name: Name of the stream to describe
+        
+    Returns:
+        Detailed information about the stream
+    """
+    logger.info(f"Describing stream: {name}")
+    
+    if not SNOWFLAKE_AVAILABLE:
+        raise ImportError("Snowflake connector is not installed. Cannot describe stream.")
+    
+    conn = get_snowflake_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute(f"DESCRIBE STREAM {name}")
+        results = cursor.fetchall()
+        
+        # Convert to dictionary with column names
+        columns = [col[0] for col in cursor.description]
+        return format_output(dict(zip(columns, results[0])))
+    except Exception as e:
+        logger.error(f"Error describing stream {name}: {e}")
+        raise
+    finally:
+        return_connection_to_pool(conn)
+
+
+
+@server.tool("describe_table")
+def describe_table(name: str) -> Dict[str, Any]:
+    """
+    Get details about a specific table.
+    
+    Args:
+        name: Name of the table to describe
+        
+    Returns:
+        Detailed information about the table
+    """
+    logger.info(f"Describing table: {name}")
+    
+    if not SNOWFLAKE_AVAILABLE:
+        raise ImportError("Snowflake connector is not installed. Cannot describe table.")
+    
+    conn = get_snowflake_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute(f"DESCRIBE TABLE {name}")
+        results = cursor.fetchall()
+        
+        # Convert to dictionary with column names
+        columns = [col[0] for col in cursor.description]
+        return format_output(dict(zip(columns, results[0])))
+    except Exception as e:
+        logger.error(f"Error describing table {name}: {e}")
+        raise
+    finally:
+        return_connection_to_pool(conn)
+
+
+
+@server.tool("describe_task")
+def describe_task(name: str) -> Dict[str, Any]:
+    """
+    Get details about a specific task.
+    
+    Args:
+        name: Name of the task to describe
+        
+    Returns:
+        Detailed information about the task
+    """
+    logger.info(f"Describing task: {name}")
+    
+    if not SNOWFLAKE_AVAILABLE:
+        raise ImportError("Snowflake connector is not installed. Cannot describe task.")
+    
+    conn = get_snowflake_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute(f"DESCRIBE TASK {name}")
+        results = cursor.fetchall()
+        
+        # Convert to dictionary with column names
+        columns = [col[0] for col in cursor.description]
+        return format_output(dict(zip(columns, results[0])))
+    except Exception as e:
+        logger.error(f"Error describing task {name}: {e}")
+        raise
+    finally:
+        return_connection_to_pool(conn)
+
+
+
+@server.tool("describe_user")
+def describe_user(name: str) -> Dict[str, Any]:
+    """
+    Get details about a specific user.
+    
+    Args:
+        name: Name of the user to describe
+        
+    Returns:
+        Detailed information about the user
+    """
+    logger.info(f"Describing user: {name}")
+    
+    if not SNOWFLAKE_AVAILABLE:
+        raise ImportError("Snowflake connector is not installed. Cannot describe user.")
+    
+    conn = get_snowflake_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute(f"DESCRIBE USER {name}")
+        results = cursor.fetchall()
+        
+        # Convert to dictionary with column names
+        columns = [col[0] for col in cursor.description]
+        return format_output(dict(zip(columns, results[0])))
+    except Exception as e:
+        logger.error(f"Error describing user {name}: {e}")
+        raise
+    finally:
+        return_connection_to_pool(conn)
+
+
+
+@server.tool("describe_view")
+def describe_view(name: str) -> Dict[str, Any]:
+    """
+    Get details about a specific view.
+    
+    Args:
+        name: Name of the view to describe
+        
+    Returns:
+        Detailed information about the view
+    """
+    logger.info(f"Describing view: {name}")
+    
+    if not SNOWFLAKE_AVAILABLE:
+        raise ImportError("Snowflake connector is not installed. Cannot describe view.")
+    
+    conn = get_snowflake_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute(f"DESCRIBE VIEW {name}")
+        results = cursor.fetchall()
+        
+        # Convert to dictionary with column names
+        columns = [col[0] for col in cursor.description]
+        return format_output(dict(zip(columns, results[0])))
+    except Exception as e:
+        logger.error(f"Error describing view {name}: {e}")
+        raise
+    finally:
+        return_connection_to_pool(conn)
+
+
+
+@server.tool("describe_warehouse")
+def describe_warehouse(name: str) -> Dict[str, Any]:
+    """
+    Get details about a specific warehouse.
+    
+    Args:
+        name: Name of the warehouse to describe
+        
+    Returns:
+        Detailed information about the warehouse
+    """
+    logger.info(f"Describing warehouse: {name}")
+    
+    if not SNOWFLAKE_AVAILABLE:
+        raise ImportError("Snowflake connector is not installed. Cannot describe warehouse.")
+    
+    conn = get_snowflake_connection()
+    try:
+        cursor = conn.cursor()
+        cursor.execute(f"DESCRIBE WAREHOUSE {name}")
+        results = cursor.fetchall()
+        
+        # Convert to dictionary with column names
+        columns = [col[0] for col in cursor.description]
+        return format_output(dict(zip(columns, results[0])))
+    except Exception as e:
+        logger.error(f"Error describing warehouse {name}: {e}")
+        raise
+    finally:
+        return_connection_to_pool(conn)
