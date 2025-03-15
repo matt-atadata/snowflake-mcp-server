@@ -267,3 +267,21 @@ Insufficient privileges to operate on database 'SNOWBITS_DEMO_DB'
 2025-03-14 09:00:55,884 - snowflake_mcp_server - WARNING - Could not set schema to PUBLIC: 002043 (02000): 01bb00e8-0004-c00c-0000-3cf70022c012: SQL compilation error:
 Object does not exist, or operation cannot be performed.
 2025-03-14 09:00:56,672 - snowflake_mcp_server - INFO - Connected to Snowflake using role APP_BUILDER_ROLE
+2025-03-15 07:24:15,753 - snowflake_mcp_server - INFO - Loaded environment variables from .env file
+2025-03-15 07:24:16,105 - snowflake_mcp_server - INFO - FastMCP imported successfully
+2025-03-15 07:24:16,196 - snowflake_mcp_server - INFO - Setting MCP server port to 8091
+2025-03-15 07:24:16,196 - snowflake_mcp_server - INFO - Setting FastAPI app port to 8090
+2025-03-15 07:24:16,198 - snowflake_mcp_server - INFO - Running Snowflake MCP server on port 8091
+2025-03-15 07:24:16,198 - snowflake_mcp_server - INFO - FastAPI app running on port 8090
+2025-03-15 07:24:16,198 - snowflake_mcp_server - INFO - Use 'fastmcp dev snowflake_mcp_inspector.py' to connect with the MCP Inspector
+2025-03-15 07:24:16,198 - snowflake_mcp_server - INFO - For Windsurf integration, ensure mcp_config.json specifies the full Python path and matching ports
+2025-03-15 07:24:16,198 - snowflake_mcp_server - INFO - Snowflake connector is available. Server can connect to Snowflake.
+2025-03-15 07:24:38,149 - snowflake_mcp_server - INFO - Loaded environment variables from .env file
+2025-03-15 07:24:38,499 - snowflake_mcp_server - INFO - FastMCP imported successfully
+2025-03-15 07:24:38,566 - snowflake_mcp_server - INFO - Setting MCP server port to 8091
+2025-03-15 07:24:38,566 - snowflake_mcp_server - INFO - Setting FastAPI app port to 8090
+2025-03-15 07:24:38,568 - snowflake_mcp_server - INFO - Running Snowflake MCP server on port 8091
+2025-03-15 07:24:38,568 - snowflake_mcp_server - INFO - FastAPI app running on port 8090
+2025-03-15 07:24:38,568 - snowflake_mcp_server - INFO - Use 'fastmcp dev snowflake_mcp_inspector.py' to connect with the MCP Inspector
+2025-03-15 07:24:38,568 - snowflake_mcp_server - INFO - For Windsurf integration, ensure mcp_config.json specifies the full Python path and matching ports
+2025-03-15 07:24:38,568 - snowflake_mcp_server - INFO - Snowflake connector is available. Server can connect to Snowflake.

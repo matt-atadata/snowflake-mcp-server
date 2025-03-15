@@ -11,11 +11,8 @@ import logging
 import argparse
 import datetime
 import json
-import urllib.parse
-import secrets
-import webbrowser
-import requests
-from typing import Dict, List, Optional, Any, Tuple
+import time  # Used in oauth_manager for token expiration calculations
+from typing import Dict, List, Optional, Any
 
 # Configure logging to file
 log_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "logs")
@@ -39,7 +36,7 @@ class DefaultArgs:
         self.port = 8090
         self.mcp_port = 8091
         self.log_level = "WARNING"
-        self.auth_method = "password"  # Options: "password", "oauth"
+        self.auth_method = "oauth"  # OAuth is now the only authentication method
         self.oauth_client_id = ""
         self.oauth_client_secret = ""
         self.oauth_redirect_uri = "http://localhost:8090/oauth/callback"
@@ -106,6 +103,18 @@ connection_pool = {}
 MAX_POOL_SIZE = 5
 CONNECTION_TIMEOUT = 60  # seconds
 
+# Import the OAuth handler if available
+try:
+    from oauth_handler import OAuthTokenManager, start_oauth_flow, setup_oauth_callback_server
+    OAUTH_AVAILABLE = True
+except ImportError:
+    OAUTH_AVAILABLE = False
+    logger.warning("OAuth handler not available. OAuth authentication will not be supported.")
+
+# Global OAuth token manager and callback server
+oauth_token_manager = None
+oauth_callback_server = None
+
 
 # Helper function to get a Snowflake connection (only if Snowflake is available)
 def get_snowflake_connection():
@@ -117,6 +126,7 @@ def get_snowflake_connection():
     3. Handles warehouse access with fallback options
     4. Validates required environment variables
     5. Provides detailed error messages for troubleshooting
+    6. Supports Oauth authentication.
 
     Returns:
         A configured Snowflake connection object
@@ -134,22 +144,22 @@ def get_snowflake_connection():
     # Validate environment variables
     SNOWFLAKE_ACCOUNT = os.getenv("SNOWFLAKE_ACCOUNT")
     SNOWFLAKE_USER = os.getenv("SNOWFLAKE_USER")
-    SNOWFLAKE_PASSWORD = os.getenv("SNOWFLAKE_PASSWORD")
+    # Password is no longer used with OAuth authentication
     SNOWFLAKE_ROLE = os.getenv("SNOWFLAKE_ROLE")
     SNOWFLAKE_WAREHOUSE = os.getenv("SNOWFLAKE_WAREHOUSE")
     SNOWFLAKE_DATABASE = os.getenv("SNOWFLAKE_DATABASE")
     SNOWFLAKE_SCHEMA = os.getenv("SNOWFLAKE_SCHEMA")
 
+    # OAuth is now the only authentication method
     # Check required variables
     required_vars = [
         SNOWFLAKE_ACCOUNT,
         SNOWFLAKE_USER,
-        SNOWFLAKE_PASSWORD,
         SNOWFLAKE_ROLE,
     ]
     if not all(required_vars):
         raise ValueError(
-            "Missing required Snowflake environment variables. Ensure SNOWFLAKE_ACCOUNT, SNOWFLAKE_USER, SNOWFLAKE_PASSWORD, and SNOWFLAKE_ROLE are set."
+            "Missing required Snowflake environment variables. Ensure SNOWFLAKE_ACCOUNT, SNOWFLAKE_USER, and SNOWFLAKE_ROLE are set."
         )
 
     # Create a unique key for this connection configuration
@@ -186,7 +196,6 @@ def get_snowflake_connection():
         connect_params = {
             "account": SNOWFLAKE_ACCOUNT,
             "user": SNOWFLAKE_USER,
-            "password": SNOWFLAKE_PASSWORD,
             "autocommit": True,  # Enable autocommit for read-only operations
             "client_session_keep_alive": True,  # Keep session alive
             "application": "Snowflake_MCP_Server",  # Identify application in Snowflake logs
@@ -194,6 +203,60 @@ def get_snowflake_connection():
             "network_timeout": CONNECTION_TIMEOUT,  # Set network timeout
             "login_timeout": CONNECTION_TIMEOUT,  # Set login timeout
         }
+        
+        # Add authentication parameters based on method
+        global oauth_token_manager, oauth_callback_server
+        
+        # OAuth is now the only authentication method
+        # Initialize OAuth token manager if not already done
+        if not oauth_token_manager and OAUTH_AVAILABLE:
+            # Set default token cache file if not specified
+            if not args.oauth_token_cache_file:
+                script_dir = os.path.dirname(os.path.abspath(__file__))
+                args.oauth_token_cache_file = os.path.join(script_dir, "oauth_tokens.json")
+            
+            # Use environment variables for client ID and secret if not provided as arguments
+            client_id = args.oauth_client_id or os.getenv("SNOWFLAKE_CLIENT_ID")
+            client_secret = args.oauth_client_secret or os.getenv("SNOWFLAKE_CLIENT_SECRET")
+            
+            if not client_id or not client_secret:
+                raise ValueError(
+                    "OAuth client ID and secret must be provided either as command line arguments or environment variables."
+                )
+            
+            oauth_token_manager = OAuthTokenManager(
+                account=SNOWFLAKE_ACCOUNT,
+                client_id=client_id,
+                client_secret=client_secret,
+                redirect_uri=args.oauth_redirect_uri,
+                token_cache_file=args.oauth_token_cache_file
+            )
+            
+            # If we don't have valid tokens, start the OAuth flow
+            if not oauth_token_manager.has_valid_tokens():
+                state = start_oauth_flow(oauth_token_manager)
+                oauth_callback_server = setup_oauth_callback_server(
+                    oauth_token_manager, 
+                    state, 
+                    port=args.port
+                )
+                
+                # Wait for user to complete authentication
+                print("Waiting for OAuth authentication to complete...")
+                print("Please authenticate in your browser and then return here.")
+                input("Press Enter to continue once authentication is complete...")
+        
+        # Get OAuth connection parameters
+        if oauth_token_manager:
+            oauth_params = oauth_token_manager.get_connection_parameters()
+            if not oauth_params:
+                raise ValueError("Failed to obtain OAuth connection parameters. Please try again.")
+            
+            # Add OAuth parameters to connection
+            connect_params.update(oauth_params)
+            logger.info("Using OAuth authentication for Snowflake connection")
+        elif not OAUTH_AVAILABLE:
+            raise ValueError("OAuth authentication is required but OAuth handler is not available.")
 
         # Add optional parameters if they exist
         # Note: We don't add warehouse here to allow metadata operations to work without a warehouse
@@ -2882,6 +2945,130 @@ def describe_warehouse(name: str) -> Dict[str, Any]:
         return_connection_to_pool(conn)
 
 
+@server.tool("oauth_manager")
+def oauth_manager(action="status") -> Dict[str, Any]:
+    """
+    Manage OAuth authentication for Snowflake.
+    
+    This tool allows you to manage OAuth authentication for Snowflake, including
+    initiating the OAuth flow, checking token status, and refreshing tokens.
+    
+    Args:
+        action: The action to perform. Options are:
+            - "status": Check the current OAuth token status
+            - "start": Start the OAuth flow to obtain new tokens
+            - "refresh": Refresh the current OAuth tokens
+            - "clear": Clear all stored OAuth tokens
+    
+    Returns:
+        A dictionary containing information about the OAuth status or action result
+    """
+    info = {}
+    
+    # Check if OAuth is available
+    if not OAUTH_AVAILABLE:
+        return format_output({
+            "error": "OAuth is not available. Make sure the oauth_handler module is installed."
+        })
+    
+    global oauth_token_manager, oauth_callback_server
+    
+    # Initialize OAuth token manager if not already done
+    if not oauth_token_manager:
+        try:
+            # Set default token cache file if not specified
+            if not args.oauth_token_cache_file:
+                script_dir = os.path.dirname(os.path.abspath(__file__))
+                args.oauth_token_cache_file = os.path.join(script_dir, "oauth_tokens.json")
+            
+            # Use environment variables for client ID and secret if not provided as arguments
+            client_id = args.oauth_client_id or os.getenv("SNOWFLAKE_CLIENT_ID")
+            client_secret = args.oauth_client_secret or os.getenv("SNOWFLAKE_CLIENT_SECRET")
+            account = os.getenv("SNOWFLAKE_ACCOUNT")
+            
+            if not client_id or not client_secret or not account:
+                return format_output({
+                    "error": "OAuth client ID, client secret, and Snowflake account must be provided."
+                })
+            
+            oauth_token_manager = OAuthTokenManager(
+                account=account,
+                client_id=client_id,
+                client_secret=client_secret,
+                redirect_uri=args.oauth_redirect_uri,
+                token_cache_file=args.oauth_token_cache_file
+            )
+            
+            info["token_manager_initialized"] = True
+        except Exception as e:
+            return format_output({
+                "error": f"Failed to initialize OAuth token manager: {e}"
+            })
+    
+    # Perform the requested action
+    try:
+        if action == "status":
+            # Use the new get_token_info method for more detailed information
+            info["has_valid_tokens"] = oauth_token_manager.has_valid_tokens()
+            info["token_info"] = oauth_token_manager.get_token_info()
+            
+            # Add configuration information
+            info["configuration"] = {
+                "token_cache_file": args.oauth_token_cache_file,
+                "redirect_uri": args.oauth_redirect_uri,
+                "client_id_provided": bool(args.oauth_client_id or os.getenv("SNOWFLAKE_CLIENT_ID")),
+                "client_secret_provided": bool(args.oauth_client_secret or os.getenv("SNOWFLAKE_CLIENT_SECRET")),
+                "account": os.getenv("SNOWFLAKE_ACCOUNT"),
+                "user": os.getenv("SNOWFLAKE_USER"),
+                "role": os.getenv("SNOWFLAKE_ROLE")
+            }
+            
+            # Add setup instructions for reference
+            info["setup_instructions"] = {
+                "create_security_integration": "CREATE OR REPLACE SECURITY INTEGRATION SNOWFLAKE_MCP_SERVER\n  TYPE = OAUTH\n  ENABLED = TRUE\n  OAUTH_CLIENT = CUSTOM\n  OAUTH_CLIENT_TYPE = 'CONFIDENTIAL'\n  OAUTH_REDIRECT_URI = '" + args.oauth_redirect_uri + "'\n  OAUTH_ISSUE_REFRESH_TOKENS = TRUE\n  OAUTH_USE_SECONDARY_ROLES = IMPLICIT\n  OAUTH_REFRESH_TOKEN_VALIDITY = 7776000;",
+                "get_client_credentials": "WITH integration_secrets AS (\n  SELECT parse_json(system$show_oauth_client_secrets('SNOWFLAKE_MCP_SERVER')) AS secrets\n)\n\nSELECT\n  secrets:\"OAUTH_CLIENT_ID\"::string AS client_id,\n  secrets:\"OAUTH_CLIENT_SECRET\"::string AS client_secret\nFROM integration_secrets;"
+            }
+        
+        elif action == "start":
+            # Start the OAuth flow
+            if oauth_callback_server:
+                info["message"] = "OAuth callback server is already running"
+            else:
+                state = start_oauth_flow(oauth_token_manager)
+                oauth_callback_server = setup_oauth_callback_server(
+                    oauth_token_manager, 
+                    state, 
+                    port=args.port
+                )
+                info["message"] = "OAuth flow started. Please authenticate in your browser."
+                info["auth_url_opened"] = True
+        
+        elif action == "refresh":
+            # Refresh the tokens
+            if not oauth_token_manager.has_valid_tokens():
+                info["error"] = "No valid tokens to refresh. Please start the OAuth flow first."
+            else:
+                success = oauth_token_manager.refresh_token()
+                info["refresh_success"] = success
+                if success:
+                    info["message"] = "OAuth tokens refreshed successfully"
+                else:
+                    info["error"] = "Failed to refresh OAuth tokens"
+        
+        elif action == "clear":
+            # Clear all tokens
+            oauth_token_manager.clear_tokens()
+            info["message"] = "OAuth tokens cleared successfully"
+        
+        else:
+            info["error"] = f"Unknown action: {action}. Valid actions are: status, start, refresh, clear"
+    
+    except Exception as e:
+        info["error"] = f"Error performing OAuth action: {e}"
+    
+    return format_output(info)
+
+
 @server.tool("server_info")
 def server_info() -> Dict[str, Any]:
     """
@@ -2916,7 +3103,23 @@ def server_info() -> Dict[str, Any]:
             "warehouse": SNOWFLAKE_WAREHOUSE,
             "database": SNOWFLAKE_DATABASE,
             "schema": SNOWFLAKE_SCHEMA,
+            "auth_method": args.auth_method,
         }
+        
+        # Add OAuth information if using OAuth
+        if args.auth_method == "oauth" and OAUTH_AVAILABLE:
+            info["oauth_configuration"] = {
+                "redirect_uri": args.oauth_redirect_uri,
+                "token_cache_file": args.oauth_token_cache_file,
+                "oauth_available": OAUTH_AVAILABLE,
+            }
+            
+            # Add token status if OAuth token manager is initialized
+            if oauth_token_manager:
+                info["oauth_configuration"]["token_manager_initialized"] = True
+                info["oauth_configuration"]["has_valid_tokens"] = oauth_token_manager.has_valid_tokens()
+            else:
+                info["oauth_configuration"]["token_manager_initialized"] = False
 
         # Try to get active session details
         try:
@@ -3049,13 +3252,8 @@ if __name__ == "__main__":
         choices=["DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL"],
         help="Set logging level (default: WARNING to silence most logs)",
     )
-    parser.add_argument(
-        "--auth-method",
-        type=str,
-        default="password",
-        choices=["password", "oauth"],
-        help="Authentication method to use (default: password)",
-    )
+    # OAuth is now the only authentication method
+    # No need for auth-method argument anymore
     parser.add_argument(
         "--oauth-client-id",
         type=str,
@@ -3084,7 +3282,7 @@ if __name__ == "__main__":
     args.port = parsed_args.port
     args.mcp_port = parsed_args.mcp_port
     args.log_level = parsed_args.log_level
-    args.auth_method = parsed_args.auth_method
+    # auth_method is now always 'oauth' as set in DefaultArgs
     args.oauth_client_id = parsed_args.oauth_client_id
     args.oauth_client_secret = parsed_args.oauth_client_secret
     args.oauth_redirect_uri = parsed_args.oauth_redirect_uri
